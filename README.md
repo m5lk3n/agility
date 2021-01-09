@@ -1,11 +1,26 @@
 # k8s-df
 
+## Prerequisites
+
+- Make
+- Go 1.14+
+- [Add client-go as a dependency](https://github.com/jtestard/client-go/blob/master/INSTALL.md#add-client-go-as-a-dependency):
+
+```bash
+michael@x250:~/go/src/lttl.dev/k8s-df
+$ make init
+go mod init
+go: creating new go.mod: module lttl.dev/k8s-df
+$ make get
+go get ...
+```
+
 ## Bookmarks
 
 ### Major Resources
 
 - [Building stuff with the Kubernetes API (Part 4) - Using Go](https://medium.com/programming-kubernetes/building-stuff-with-the-kubernetes-api-part-4-using-go-b1d0e3c1c899)
-- [CUD Deployment in main.go](https://github.com/kubernetes/client-go/blob/master/examples/create-update-delete-deployment/main.go)
+- [CUD k8s-deployment in main.go](https://github.com/kubernetes/client-go/blob/master/examples/create-update-delete-deployment/main.go)
 
 ### Backlog
 
