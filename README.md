@@ -4,6 +4,7 @@
 
 - Make
 - Go 1.14+
+- Kubernetes 1.19.1
 - [Add client-go as a dependency](https://github.com/jtestard/client-go/blob/master/INSTALL.md#add-client-go-as-a-dependency):
 
 ```bash
@@ -12,7 +13,8 @@ $ make init
 go mod init
 go: creating new go.mod: module lttl.dev/k8s-df
 $ make get
-go get ...
+go get k8s.io/client-go@v0.19.1
+# ...
 ```
 
 ## Bookmarks
@@ -20,7 +22,9 @@ go get ...
 ### Major Resources
 
 - [Building stuff with the Kubernetes API (Part 4) - Using Go](https://medium.com/programming-kubernetes/building-stuff-with-the-kubernetes-api-part-4-using-go-b1d0e3c1c899)
-- [CUD k8s-deployment in main.go](https://github.com/kubernetes/client-go/blob/master/examples/create-update-delete-deployment/main.go)
+- client-go
+  - [client-go](https://github.com/kubernetes/client-go)
+  - [CUD k8s-deployment in main.go](https://github.com/kubernetes/client-go/blob/master/examples/create-update-delete-deployment/main.go)
 
 ### API doc
 
@@ -30,7 +34,6 @@ go get ...
 ### Backlog
 
 - client-go
-  - [client-go](https://github.com/kubernetes/client-go)
   - [client-go examples](https://github.com/kubernetes/client-go/tree/master/examples)
   - [Available clientsets](https://github.com/kubernetes/client-go/blob/master/kubernetes/clientset.go)
   - [Deployment informer](https://github.com/kubernetes/client-go/blob/master/informers/apps/v1/deployment.go)
