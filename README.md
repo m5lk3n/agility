@@ -22,6 +22,11 @@ go get ...
 - [Building stuff with the Kubernetes API (Part 4) - Using Go](https://medium.com/programming-kubernetes/building-stuff-with-the-kubernetes-api-part-4-using-go-b1d0e3c1c899)
 - [CUD k8s-deployment in main.go](https://github.com/kubernetes/client-go/blob/master/examples/create-update-delete-deployment/main.go)
 
+### API doc
+
+- [k8s client-go apps-v1](https://godoc.org/k8s.io/client-go/kubernetes/typed/apps/v1)
+- [k8s api-v1](https://godoc.org/k8s.io/api/core/v1)
+
 ### Backlog
 
 - client-go
