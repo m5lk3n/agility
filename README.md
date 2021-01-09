@@ -46,3 +46,19 @@ go get ...
 ## Reading List
 
 - [Understanding go.sum and go.mod file in Go (Golang)](https://golangbyexample.com/go-mod-sum-module/)
+
+## Testing
+
+Run a K8s cluster locally.
+
+```bash
+# shell 1
+$ make all
+# ...
+$ go run main.go
+```
+
+```bash
+# shell 2
+$ kubectl create deployment hello-node --image=k8s.gcr.io/echoserver:1.4
+```
