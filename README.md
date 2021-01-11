@@ -65,3 +65,14 @@ $ go run main.go
 # shell 2
 $ kubectl create deployment hello-node --image=k8s.gcr.io/echoserver:1.4
 ```
+
+## Spec
+
+### DF
+
+- Purely based upon K8s deployments (directly via `kubectl deploy`, or indirectly via Helm or CD tooling like ArgoCD)
+- 2 parts: K8s controller watching K8s deployments, and exporting frequency as a node exporter for Prometheus
+- Per cluster
+- Per app (name)
+- Per namespace
+- Per aggregate (*support name pattern!*)
