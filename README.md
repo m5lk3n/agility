@@ -17,6 +17,62 @@ go get k8s.io/client-go@v0.19.1
 # ...
 ```
 
+### Install kind
+
+kind v0.7.0+ is required, but set up was v0.9.0 (which comes with Kubernetes 1.19.1):
+
+```bash
+$ curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.9.0/kind-linux-amd64
+$ chmod +x kind
+$ mv kind ~/bin
+$ kind create cluster
+# ...
+```
+
+### Install Prometheus
+
+```bash
+$ kubectl create ns monitoring
+$ helm repo update
+$ helm repo add stable https://charts.helm.sh/stable
+$ helm install prometheus stable/prometheus --namespace monitoring
+#
+# ...
+#
+# Get the Prometheus server URL by running these commands in the same shell:
+#  export POD_NAME=$(kubectl get pods --namespace monitoring -l "app=prometheus,component=server" -o jsonpath="{.items[0].metadata.name}")
+#  kubectl --namespace monitoring port-forward $POD_NAME 9090
+#
+# ...
+#
+# To uninstall:
+#   $ helm delete prometheus --namespace monitoring
+#
+```
+
+### Install Grafana
+
+```bash
+$ kubectl create ns monitoring
+$ helm repo add grafana https://grafana.github.io/helm-charts
+$ helm repo update
+$ helm install grafana grafana/grafana --namespace monitoring
+#
+# ...
+#
+# To uninstall:
+#   $ helm delete grafana --namespace monitoring
+#
+```
+
+### Configure Prometheus as a Data Source in Grafana
+
+![Connect Grafana Prometheus](prometheus_as_data_source_in_grafana.png)
+
+### Import Prometheus Dashboard in Grafana
+
+Under [Import](http://localhost:3000/dashboard/import) load dashboard ID `1860`.
+
 ## Bookmarks
 
 ### Major Resources
