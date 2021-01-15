@@ -119,6 +119,11 @@ $ go run main.go
 
 ```bash
 # shell 2
+# deploy ...
+$ kubectl create deployment hello-node --image=k8s.gcr.io/echoserver:1.4
+# ... delete ...
+$ kubectl delete deployment hello-node
+# ... deploy
 $ kubectl create deployment hello-node --image=k8s.gcr.io/echoserver:1.4
 ```
 
@@ -129,6 +134,6 @@ $ kubectl create deployment hello-node --image=k8s.gcr.io/echoserver:1.4
 - Purely based upon K8s deployments (directly via `kubectl deploy`, or indirectly via Helm or CD tooling like ArgoCD)
 - 2 parts: K8s controller watching K8s deployments, and exporting frequency as a node exporter for Prometheus
 - Per cluster
-- Per app (name)
-- Per namespace
+- Per namespace (*support include/exclude pattern!*)
+- Per app (name) (*support include/exclude pattern!*)
 - Per aggregate (*support name pattern!*)
