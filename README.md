@@ -108,12 +108,19 @@ Under [Import](http://localhost:3000/dashboard/import) load dashboard ID `1860`.
 
 ### Major Resources
 
-#### K8s Watcher
+#### K8s
+
+Watcher:
 
 - [Building stuff with the Kubernetes API (Part 4) - Using Go](https://medium.com/programming-kubernetes/building-stuff-with-the-kubernetes-api-part-4-using-go-b1d0e3c1c899) and related [pvcwatch in go](https://github.com/vladimirvivien/k8s-client-examples/blob/master/go/pvcwatch/main.go)
 - client-go
   - [client-go](https://github.com/kubernetes/client-go)
   - [CUD k8s-deployment in main.go](https://github.com/kubernetes/client-go/blob/master/examples/create-update-delete-deployment/main.go)
+
+ConfigMap:
+
+- [K8S Read config map via go API](https://stackoverflow.com/questions/59234194/k8s-read-config-map-via-go-api)
+- [A simple Go client for Kubernetes](https://github.com/ericchiang/k8s#a-simple-go-client-for-kubernetes)
 
 #### Prometheus Node Exporter
 

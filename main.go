@@ -17,6 +17,22 @@ import (
 	"k8s.io/client-go/util/homedir"
 )
 
+func readConfigMap(clientset *kubernetes.Clientset) {
+
+	const namespace = "k8s-df"
+	const configMapName = "k8s-df-config"
+
+	configMapClient := clientset.CoreV1().ConfigMaps(namespace)
+
+	configMap, err := configMapClient.Get(context.TODO(), configMapName, metav1.GetOptions{})
+	if err != nil {
+		panic(err)
+	}
+
+	excludePattern := configMap.Data["exclude-pattern"]
+	fmt.Println("configured exclude pattern:", excludePattern)
+}
+
 func main() {
 	var kubeconfig *string
 	if home := homedir.HomeDir(); home != "" {
@@ -34,6 +50,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	readConfigMap(clientset)
 
 	deploymentsClient := clientset.AppsV1().Deployments(apiv1.NamespaceAll)
 
