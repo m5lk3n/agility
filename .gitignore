@@ -1,2 +1,3 @@
 __debug_bin
-deployments-watcher
+/deployments-watcher/deployments-watcher
+/node-exporter/node-exporter
