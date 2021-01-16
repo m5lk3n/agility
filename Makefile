@@ -5,24 +5,19 @@ help:
 	@echo
 	@echo "  where <target> is one of the following"
 	@echo
-	@echo "    init        to initialize the module"
-	@echo "    get         to fetch all package dependencies"
-	@echo "    build       to compile binary for local machine architecture"
+	@echo "    clean       to remove the previously built latest container image"
+	@echo "    bake        to bake a new container image as latest"
 	@echo "    all         to run all targets"
 	@echo
 	@echo "    help        to show this text"
 
-.PHONY: init
-init:
-	go mod init
+.PHONY: clean
+clean:
+	docker rmi lttl.dev/k8s-df:latest
 
-.PHONY: get
-get:
-	go get k8s.io/client-go@v0.19.1
-
-.PHONY: build
-build:
-	go build -o k8s-df
+.PHONY: bake
+bake:
+	docker build -t lttl.dev/k8s-df .
 
 .PHONY: all
-all: init get build
+all: clean bake
