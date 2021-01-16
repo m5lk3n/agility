@@ -11,13 +11,19 @@
 - Per app (name) (*support include/exclude pattern!*)
 - Per aggregate (*support name pattern!*)
 
+### Tech
+
+- Deploy and run on Kubernetes only
+- Store settings in configmap (offer restart/reload option later)
+
 ## Implementation
 
 ### Prerequisites
 
+Local:
+
 - Make
 - Go 1.14+
-- Kubernetes 1.19.1
 - [Add client-go as a dependency](https://github.com/jtestard/client-go/blob/master/INSTALL.md#add-client-go-as-a-dependency):
 
 ```bash
@@ -29,6 +35,18 @@ $ make get
 go get k8s.io/client-go@v0.19.1
 # ...
 ```
+
+- kubectl v1.20.2
+- Helm v3.4.2
+
+K8s:
+
+- Kubernetes 1.19.1 with Prometheus and Grafana deployed:
+  
+  | app name | chart version | app version |
+  | --- | --- | --- |
+  | grafana | grafana-6.1.17 | 7.3.5 |
+  | prometheus | prometheus-11.12.1 | 2.20.1 |
 
 #### Install kind
 
