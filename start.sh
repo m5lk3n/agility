@@ -1,2 +1,2 @@
 /deployment-watcher &
-GIN_MODE=release /node-exporter &
+GIN_MODE=release PORT=80 /node-exporter &
