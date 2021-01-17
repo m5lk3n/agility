@@ -2,7 +2,7 @@
 
 NAMESPACE=k8s-df
 NAME=k8s-df
-IMAGE="lttl.dev/k8s-df:latest"
+IMAGE="lttl.dev/k8s-df:${IMAGE_VER}"
 
 kubectl delete namespace ${NAMESPACE}
 

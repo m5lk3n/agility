@@ -1,5 +1,7 @@
 # k8s-df
 
+**`export IMAGE_VER` before flight!**
+
 ## Specification
 
 ### DF KPI
@@ -150,6 +152,16 @@ ConfigMap:
 ### Reading List
 
 - [Understanding go.sum and go.mod file in Go (Golang)](https://golangbyexample.com/go-mod-sum-module/)
+
+## Deploying
+
+```bash
+$ cd k8s
+$ ./k8s
+# forward local port 8088 to node exporter port (80)
+$ export POD_NAME=$(kubectl get pods --namespace k8s-df -l "app=k8s-df" -o jsonpath="{.items[0].metadata.name}")
+$ kubectl --namespace k8s-df port-forward $POD_NAME 8088:80
+```
 
 ## Testing
 

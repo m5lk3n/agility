@@ -1,5 +1,5 @@
 
-IMAGE = lttl.dev/k8s-df:latest
+IMAGE = lttl.dev/k8s-df:${IMAGE_VER}
 
 # default target
 .PHONY: help
@@ -8,8 +8,8 @@ help:
 	@echo
 	@echo "  where <target> is one of the following"
 	@echo
-	@echo "    clean       to remove the previously built latest container image"
-	@echo "    bake        to bake a new container image as latest"
+	@echo "    clean       to remove the previously built container image with version ${IMAGE_VER}"
+	@echo "    bake        to bake a new container image as version ${IMAGE_VER}"
 	@echo "    load        to load the newly built image into kind"
 	@echo "    all         to run all targets"
 	@echo
@@ -27,7 +27,7 @@ bake:
 
 .PHONY: load
 load:
-	kind load docker-image ${IMAGE} --name kind
+	kind load docker-image ${IMAGE}
 	docker exec -it kind-control-plane crictl images
 
 .PHONY: all
