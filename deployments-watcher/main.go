@@ -5,39 +5,32 @@ import (
 	"flag"
 	"fmt"
 	"log"
-	"path/filepath"
 
 	v1 "k8s.io/api/apps/v1"
 	apiv1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/watch"
-
 	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/tools/clientcmd"
-	"k8s.io/client-go/util/homedir"
+	"k8s.io/client-go/rest"
 )
 
 func readConfigMap(clientset *kubernetes.Clientset) {
 
-	const namespace = "k8s-df" // TODO: via flag
-	const configMapName = "k8s-df-config"
+	configMapClient := clientset.CoreV1().ConfigMaps(*namespace)
 
-	configMapClient := clientset.CoreV1().ConfigMaps(namespace)
-
-	configMap, err := configMapClient.Get(context.TODO(), configMapName, metav1.GetOptions{})
+	configMap, err := configMapClient.Get(context.TODO(), "k8s-df-config", metav1.GetOptions{})
 	if err != nil {
 		panic(err)
 	}
 
-	excludePattern := configMap.Data["exclude-pattern"]
-	fmt.Println("configured exclude pattern:", excludePattern)
+	excludePatternNamespace := configMap.Data["exclude-pattern-namespace"]
+	fmt.Println("configured exclude pattern namespace:", excludePatternNamespace)
 }
 
 func handleDeployments(clientset *kubernetes.Clientset) {
 
 	deploymentsClient := clientset.AppsV1().Deployments(apiv1.NamespaceAll)
 
-	// list deployments
 	fmt.Println("listing deployments:")
 	list, err := deploymentsClient.List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -47,7 +40,6 @@ func handleDeployments(clientset *kubernetes.Clientset) {
 		fmt.Printf(" * %s\n", d.Name)
 	}
 
-	// watch deployments
 	fmt.Println("watching deployments:")
 	watcher, err := deploymentsClient.Watch(context.TODO(), metav1.ListOptions{})
 	if err != nil {
@@ -66,19 +58,17 @@ func handleDeployments(clientset *kubernetes.Clientset) {
 	}
 }
 
+var namespace *string
+
 func main() {
-	var kubeconfig *string
-	if home := homedir.HomeDir(); home != "" {
-		kubeconfig = flag.String("kubeconfig", filepath.Join(home, ".kube", "config"), "(optional) absolute path to the kubeconfig file")
-	} else {
-		kubeconfig = flag.String("kubeconfig", "", "absolute path to the kubeconfig file")
-	}
+	namespace = flag.String("namespace", "k8s-df", "namespace in which deployment watcher is deployed")
 	flag.Parse()
 
-	config, err := clientcmd.BuildConfigFromFlags("", *kubeconfig) // TODO: add in-cluster support, see "From a cluster" https://medium.com/programming-kubernetes/building-stuff-with-the-kubernetes-api-part-4-using-go-b1d0e3c1c899
+	config, err := rest.InClusterConfig()
 	if err != nil {
 		panic(err)
 	}
+
 	clientset, err := kubernetes.NewForConfig(config)
 	if err != nil {
 		panic(err)

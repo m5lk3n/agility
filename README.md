@@ -26,18 +26,6 @@ Local:
 
 - Make
 - Go 1.14+
-- [Add client-go as a dependency](https://github.com/jtestard/client-go/blob/master/INSTALL.md#add-client-go-as-a-dependency):
-
-```bash
-michael@x250:~/go/src/lttl.dev/k8s-df
-$ make init
-go mod init
-go: creating new go.mod: module lttl.dev/k8s-df
-$ make get
-go get k8s.io/client-go@v0.19.1
-# ...
-```
-
 - kubectl v1.20.2
 - Helm v3.4.2
 
@@ -105,6 +93,22 @@ $ helm install grafana grafana/grafana --namespace monitoring
 #### Import Prometheus Dashboard in Grafana
 
 Under [Import](http://localhost:3000/dashboard/import) load dashboard ID `1860`.
+
+## Build
+
+### deployments watcher
+
+- [Add client-go as a dependency](https://github.com/jtestard/client-go/blob/master/INSTALL.md#add-client-go-as-a-dependency):
+
+```bash
+michael@x250:~/go/src/lttl.dev/k8s-df/deployments-watcher
+$ make init
+go mod init
+go: creating new go.mod: module lttl.dev/k8s-df/deployments-watcher
+$ make get
+go get k8s.io/client-go@v0.19.1
+# ...
+```
 
 ## Bookmarks
 

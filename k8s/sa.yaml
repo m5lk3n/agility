@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: k8s-df-serviceaccount
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: k8s-df-role
+rules:
+- apiGroups: [""] # core API group
+  resources: ["configmaps"]
+  resourceNames: ["k8s-df-config"]
+  verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: k8s-df-rolebinding
+subjects:
+- name: k8s-df-serviceaccount
+  kind: ServiceAccount
+  apiGroup: ""
+roleRef:
+  name: k8s-df-role
+  kind: Role
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: k8s-df-clusterrole
+rules:
+- apiGroups: ["apps"]
+  resources: ["deployments"]
+  verbs: ["list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: k8s-df-clusterrolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: k8s-df-clusterrole
+subjects:
+- kind: ServiceAccount
+  name: k8s-df-serviceaccount
+  namespace: k8s-df
+
+#kubectl create clusterrolebinding k8s-df-clusterrolebinding \
+#  --clusterrole=k8s-df-clusterrole \
+#  --serviceaccount=k8s-df:k8s-df-serviceaccount

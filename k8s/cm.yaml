@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: k8s-df-config
 data:
-  exclude-pattern: kube-*
+  exclude-pattern-namespace: kube-*
