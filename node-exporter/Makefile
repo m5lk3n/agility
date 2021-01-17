@@ -23,7 +23,7 @@ get:
 
 .PHONY: build
 build:
-	go build -o node-exporter
+	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o node-exporter
 
 .PHONY: all
 all: init get build

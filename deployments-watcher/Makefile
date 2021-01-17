@@ -22,7 +22,7 @@ get:
 
 .PHONY: build
 build:
-	go build -o deployments-watcher
+	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o deployments-watcher
 
 .PHONY: all
 all: init get build

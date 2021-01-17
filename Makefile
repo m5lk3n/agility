@@ -21,6 +21,8 @@ clean:
 
 .PHONY: bake
 bake:
+	$(MAKE) -C node-exporter build
+	$(MAKE) -C deployments-watcher build
 	docker build -t ${IMAGE} .
 
 .PHONY: load
