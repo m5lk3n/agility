@@ -125,6 +125,7 @@ ConfigMap:
 #### Prometheus Node Exporter
 
 - [Writing exporters](https://prometheus.io/docs/instrumenting/writing_exporters/)
+- kind: [Loading an Image Into Your Cluster](https://kind.sigs.k8s.io/docs/user/quick-start/#loading-an-image-into-your-cluster)
 
 ### K8s API Documentation
 
