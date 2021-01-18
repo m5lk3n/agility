@@ -131,6 +131,11 @@ ConfigMap:
 #### Prometheus Node Exporter
 
 - [Writing exporters](https://prometheus.io/docs/instrumenting/writing_exporters/)
+- [Naming conventions](https://prometheus.io/docs/practices/naming/)
+- [Best practices](https://prometheus.io/docs/practices/instrumentation/#things-to-watch-out-for)
+- [A Noob's Guide to Custom Prometheus Exporters](https://rsmitty.github.io/Prometheus-Exporters/)
+- [A Noob's Guide to Custom Prometheus Exporters (Revamped!)](https://rsmitty.github.io/Prometheus-Exporters-Revamp/)
+- [Prometheus' node_exporter.go](https://github.com/prometheus/node_exporter/blob/master/node_exporter.go)
 - kind: [Loading an Image Into Your Cluster](https://kind.sigs.k8s.io/docs/user/quick-start/#loading-an-image-into-your-cluster)
 
 ### K8s API Documentation
