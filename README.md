@@ -20,6 +20,10 @@
 
 ## Implementation
 
+### Metric idea
+
+- `deployed{app=<name>,namespace=<name>}=<UnixTimeOfWhen>?` (observation time? deployment time?)
+
 ### Prerequisites
 
 Local:

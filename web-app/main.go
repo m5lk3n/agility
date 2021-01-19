@@ -1,8 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
@@ -21,7 +22,7 @@ func ReadinessHandler(c *gin.Context) {
 // NotFoundHandler to indicate that requested resource could not be found
 func NotFoundHandler(c *gin.Context) {
 	// log this event as it could be an attempt to break in...
-	fmt.Println("Not found, requested URL path:", c.Request.URL.Path)
+	log.Infoln("Not found, requested URL path:", c.Request.URL.Path)
 	c.AbortWithStatusJSON(http.StatusNotFound, gin.H{"message": "requested resource not found"})
 }
 
@@ -48,8 +49,8 @@ func SetupRouter() *gin.Engine {
 func main() {
 	router := SetupRouter()
 
-	fmt.Println("web app start...")
-	defer fmt.Println("web app shutdown!")
+	log.Infoln("web app start...")
+	defer log.Infoln("web app shutdown!")
 
 	// set port via PORT environment variable
 	router.Run() // default port is 8080
