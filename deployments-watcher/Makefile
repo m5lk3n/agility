@@ -19,6 +19,8 @@ init:
 .PHONY: get
 get:
 	go get k8s.io/client-go@v0.19.1
+	go get github.com/sirupsen/logrus
+	go get github.com/elankath/logflag
 
 .PHONY: build
 build:

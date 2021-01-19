@@ -1,5 +1,5 @@
 #!/bin/sh
 
-/deployments-watcher &
+/deployments-watcher -log ${DF_LOG} &
 /web-app &
 /node-exporter

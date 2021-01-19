@@ -3,4 +3,5 @@ kind: ConfigMap
 metadata:
   name: k8s-df-config
 data:
-  exclude-pattern-namespace: kube-*
+  exclude-regexp-pattern-names: ^local-path-provisioner$
+  exclude-regexp-pattern-namespaces: ^kube-|^monitoring$|^k8s-df$
