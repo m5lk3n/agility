@@ -18,11 +18,12 @@ init:
 
 .PHONY: get
 get:
-	go get k8s.io/client-go@v0.19.1
+	go get github.com/gin-gonic/contrib/static
+	go get github.com/gin-gonic/gin
 
 .PHONY: build
 build:
-	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o deployments-watcher
+	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o web-app
 
 .PHONY: all
 all: init get build

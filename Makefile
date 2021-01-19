@@ -13,6 +13,7 @@ help:
 	@echo "    load        to load the newly built image into kind"
 	@echo "    redeploy    to uninstall and to install the application with the loaded image"
 	@echo "    all         to run all targets"
+	@echo "    new         to run all target but clean"
 	@echo
 	@echo "    help        to show this text"
 
@@ -23,6 +24,7 @@ clean:
 .PHONY: bake
 bake:
 	$(MAKE) -C node-exporter build
+	$(MAKE) -C web-app build
 	$(MAKE) -C deployments-watcher build
 	docker build -t ${IMAGE} .
 
@@ -37,3 +39,6 @@ redeploy:
 
 .PHONY: all
 all: clean bake load redeploy
+
+.PHONY: new
+new: bake load redeploy

@@ -26,7 +26,8 @@ install:
 	# add CPU and memory limits and requests to the creation:
 	kubectl create deployment --image=${IMAGE} ${NAME} --namespace=${NAMESPACE}
 	kubectl set serviceaccount deployment ${NAME} k8s-df-serviceaccount --namespace=${NAMESPACE}
-	kubectl expose deployment ${NAME} --port=80 --name=${NAME} --namespace=${NAMESPACE}
+	kubectl expose deployment ${NAME} --port=80 --name=${NAME}-web-app --namespace=${NAMESPACE}
+	kubectl expose deployment ${NAME} --port=8080 --name=${NAME}-node-exporter --namespace=${NAMESPACE}
 
 .PHONY: all
 all: uninstall install

@@ -7,7 +7,7 @@ help:
 	@echo
 	@echo "    init        to initialize the module"
 	@echo "    get         to fetch all package dependencies"
-	@echo "    build       to compile binary for local machine architecture"
+	@echo "    build       to compile binary for linux amd64 architecture"
 	@echo "    all         to run all targets"
 	@echo
 	@echo "    help        to show this text"
@@ -18,8 +18,9 @@ init:
 
 .PHONY: get
 get:
-	go get github.com/gin-gonic/contrib/static
-	go get github.com/gin-gonic/gin
+	go get github.com/sirupsen/logrus
+	go get github.com/prometheus/client_golang/prometheus/promhttp
+	go get github.com/prometheus/client_golang/prometheus
 
 .PHONY: build
 build:
