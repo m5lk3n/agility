@@ -4,16 +4,16 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 )
 
-var counterMetric = prometheus.NewCounterVec(
+var deployedTotalMetric = prometheus.NewCounterVec(
 	prometheus.CounterOpts{
-		Name: "counter_metric",
-		Help: "Counts occurred in our cluster"},
-	[]string{"app", "namespace"},
+		Name: "deployed_total",
+		Help: "Amount of app deployments into the cluster namespace"},
+	[]string{"namespace", "app"},
 )
 
 func init() {
 
-	prometheus.MustRegister(counterMetric)
+	prometheus.MustRegister(deployedTotalMetric)
 
-	counterMetric.WithLabelValues("myApp", "myNamespace").Add(1)
+	deployedTotalMetric.WithLabelValues("myNamespace", "myApp").Inc()
 }
