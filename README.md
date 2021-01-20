@@ -7,7 +7,6 @@
 ### DF KPI
 
 - Purely based upon K8s deployments (directly via `kubectl deploy`, or indirectly via Helm or CD tooling like ArgoCD)
-- 2 parts: K8s controller watching K8s deployments, and exporting frequency as a node exporter for Prometheus
 - Per cluster
 - Per namespace (*support include/exclude pattern!*)
 - Per app (name) (*support include/exclude pattern!*)
@@ -23,6 +22,12 @@
 ### Metric idea
 
 - `deployed{app=<name>,namespace=<name>}=<UnixTimeOfWhen>?` (observation time? deployment time?)
+
+### Design idea
+
+3 layers: K8s controller watching K8s deployments -> storing data in map <- node exporter for Prometheus exporting data/frequency
+
+[Scheduling](https://prometheus.io/docs/instrumenting/writing_exporters/#scheduling): "*Metrics should only be pulled from the application when Prometheus scrapes them, exporters should not perform scrapes based on their own timers. That is, all scrapes should be synchronous.*"
 
 ### Prerequisites
 
