@@ -8,9 +8,10 @@ import (
 )
 
 func main() {
-	//This section will start the HTTP server and expose
-	//any metrics on the /metrics endpoint.
-	http.Handle("/metrics", promhttp.Handler())
-	log.Info("Beginning to serve on port :8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	const port = ":8080"
+	const endpoint = "/metrics"
+
+	http.Handle(endpoint, promhttp.Handler())
+	log.Infof("Node exporter serving from http://localhost%s%s", port, endpoint)
+	log.Fatal(http.ListenAndServe(port, nil))
 }
