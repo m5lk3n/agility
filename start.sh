@@ -1,4 +1,4 @@
 #!/bin/sh
 
-#/df-backend -log ${DF_LOG} &
+/df-backend -log ${DF_LOG} &
 /web-app

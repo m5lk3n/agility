@@ -4,7 +4,8 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 )
 
-var deployedTotalMetric = prometheus.NewCounterVec(
+// DeployedTotalMetric is a KPI which is set by the deployment-watcher upon added deployment
+var DeployedTotalMetric = prometheus.NewCounterVec(
 	prometheus.CounterOpts{
 		Name: "deployed_total",
 		Help: "Amount of app deployments into the cluster namespace"},
@@ -12,8 +13,5 @@ var deployedTotalMetric = prometheus.NewCounterVec(
 )
 
 func init() {
-
-	prometheus.MustRegister(deployedTotalMetric)
-
-	deployedTotalMetric.WithLabelValues("myNamespace", "myApp").Inc()
+	prometheus.MustRegister(DeployedTotalMetric)
 }

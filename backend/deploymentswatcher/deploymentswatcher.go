@@ -14,6 +14,7 @@ import (
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
+	nodeexporter "lttl.dev/k8s-df/backend/nodeexporter"
 )
 
 // flags (other than -log)
@@ -96,6 +97,7 @@ func handleDeployments(clientset *kubernetes.Clientset) {
 		case watch.Added:
 			if isIncluded(deployment) {
 				log.Infof(" + %s deployed in namespace %s at %d\n", deployment.Name, deployment.Namespace, time.Now().UnixNano())
+				nodeexporter.DeployedTotalMetric.WithLabelValues(deployment.Namespace, deployment.Name).Inc()
 			} else {
 				log.Infof(" - %s deployed in namespace %s but excluded from watching as configured\n", deployment.Name, deployment.Namespace)
 			}
