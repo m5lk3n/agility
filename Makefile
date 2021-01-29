@@ -18,7 +18,7 @@ help:
 
 .PHONY: check
 check:
-	[ "${IMAGE_VER}" != "" ] && echo "IMAGE_VER has to be set"
+	[ "${IMAGE_VER}" != "" ] || echo "IMAGE_VER has to be set"
 
 .PHONY: clean
 clean: check
@@ -28,7 +28,6 @@ clean: check
 bake: check
 	$(MAKE) -C backend build
 	$(MAKE) -C web-app build
-	$(MAKE) -C deployments-watcher build
 	docker build -t ${IMAGE} .
 
 .PHONY: load

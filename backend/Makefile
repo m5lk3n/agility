@@ -14,10 +14,12 @@ help:
 
 .PHONY: init
 init:
-	go mod init
+	go mod init lttl.dev/k8s-df/backend
 
 .PHONY: get
 get:
+	go get k8s.io/client-go@v0.19.1
+	go get github.com/elankath/logflag
 	go get github.com/sirupsen/logrus
 	go get github.com/prometheus/client_golang/prometheus/promhttp
 	go get github.com/prometheus/client_golang/prometheus

@@ -1,5 +1,4 @@
 #!/bin/sh
 
-#/deployments-watcher -log ${DF_LOG} &
-/web-app &
-/df-backend
+#/df-backend -log ${DF_LOG} &
+/web-app

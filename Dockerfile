@@ -1,6 +1,5 @@
 # docker build -t lttl.dev/k8s-df .
 FROM alpine:3.13.0
-COPY deployments-watcher/deployments-watcher /
 COPY backend/df-backend /
 COPY web-app/static/ /static/
 COPY web-app/ /

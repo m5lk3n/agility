@@ -1,4 +1,4 @@
-package main
+package deploymentswatcher
 
 import (
 	"context"
@@ -103,7 +103,7 @@ func handleDeployments(clientset *kubernetes.Clientset) {
 	}
 }
 
-func main() {
+func Start() {
 	namespace = flag.String("namespace", "k8s-df", "namespace in which deployment watcher is deployed")
 	flag.Parse()
 	logflag.Parse() // Call after regular flag.Parse()

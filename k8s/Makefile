@@ -15,12 +15,16 @@ help:
 	@echo
 	@echo "    help        to show this text"
 
+.PHONY: check
+check:
+	[ "${IMAGE_VER}" != "" ] || echo "IMAGE_VER has to be set"
+
 .PHONY: uninstall
 uninstall:
 	kubectl delete namespace ${NAMESPACE}
 
 .PHONY: install
-install:
+install: check
 	kubectl create namespace ${NAMESPACE}
 	kubectl apply -f . --namespace=${NAMESPACE}
 	# add CPU and memory limits and requests to the creation:
