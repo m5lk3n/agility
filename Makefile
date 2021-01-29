@@ -26,7 +26,7 @@ clean: check
 
 .PHONY: bake
 bake: check
-	$(MAKE) -C node-exporter build
+	$(MAKE) -C backend build
 	$(MAKE) -C web-app build
 	$(MAKE) -C deployments-watcher build
 	docker build -t ${IMAGE} .

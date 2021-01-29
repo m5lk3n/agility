@@ -1,4 +1,4 @@
-package main
+package nodeexporter
 
 import (
 	"net/http"
@@ -7,7 +7,8 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func main() {
+// Start a node exporter
+func Start() {
 	const port = ":8080"
 	const endpoint = "/metrics"
 

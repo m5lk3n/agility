@@ -1,4 +1,4 @@
-module lttl.dev/k8s-df/node-exporter
+module lttl.dev/k8s-df/backend
 
 go 1.15
 

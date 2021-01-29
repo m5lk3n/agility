@@ -24,7 +24,7 @@ get:
 
 .PHONY: build
 build:
-	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o node-exporter
+	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o df-backend
 
 .PHONY: all
 all: init get build
