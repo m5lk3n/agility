@@ -97,7 +97,7 @@ func handleDeployments(clientset *kubernetes.Clientset) {
 		case watch.Added:
 			if isIncluded(deployment) {
 				log.Infof(" + %s deployed in namespace %s at %d\n", deployment.Name, deployment.Namespace, time.Now().UnixNano())
-				nodeexporter.DeployedTotalMetric.WithLabelValues(deployment.Namespace, deployment.Name).Inc()
+				nodeexporter.Add(nodeexporter.Deployment{Name: deployment.Name, Namespace: deployment.Namespace})
 			} else {
 				log.Infof(" - %s deployed in namespace %s but excluded from watching as configured\n", deployment.Name, deployment.Namespace)
 			}
@@ -105,6 +105,7 @@ func handleDeployments(clientset *kubernetes.Clientset) {
 	}
 }
 
+// Start a deployments watcher
 func Start() {
 	namespace = flag.String("namespace", "k8s-df", "namespace in which deployment watcher is deployed")
 	flag.Parse()
