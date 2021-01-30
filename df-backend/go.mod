@@ -1,4 +1,4 @@
-module lttl.dev/k8s-df/backend
+module lttl.dev/k8s-df/df-backend
 
 go 1.15
 

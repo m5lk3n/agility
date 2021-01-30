@@ -177,9 +177,9 @@ ConfigMap:
 $ cd k8s
 $ ./k8s
 $ export POD_NAME=$(kubectl get pods --namespace k8s-df -l "app=k8s-df" -o jsonpath="{.items[0].metadata.name}")
-# forward local port 8088 to web-app port (80), to enable: curl localhost:8088
+# forward local port 8088 to df-frontend port (80), to enable: curl localhost:8088
 $ kubectl --namespace k8s-df port-forward $POD_NAME 8088:80
-# forward local port 8089 to node-exporter port (8080), to enable: curl localhost:8089/metrics
+# forward local port 8089 to df-backend (node-exporter) port (8080), to enable: curl localhost:8089/metrics
 $ kubectl --namespace k8s-df port-forward $POD_NAME 8089:8080
 ```
 

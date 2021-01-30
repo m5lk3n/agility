@@ -26,8 +26,8 @@ clean: check
 
 .PHONY: bake
 bake: check
-	$(MAKE) -C backend build
-	$(MAKE) -C web-app build
+	$(MAKE) -C df-backend build
+	$(MAKE) -C df-frontend build
 	docker build -t ${IMAGE} .
 
 .PHONY: load

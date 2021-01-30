@@ -14,7 +14,7 @@ import (
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
-	nodeexporter "lttl.dev/k8s-df/backend/nodeexporter"
+	nodeexporter "lttl.dev/k8s-df/df-backend/nodeexporter"
 )
 
 // flags (other than -log)
