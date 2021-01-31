@@ -1,5 +1,6 @@
 
 IMAGE = lttl.dev/k8s-df:${IMAGE_VER}
+VERSION_TXT = version.txt
 
 # default target
 .PHONY: help
@@ -28,6 +29,8 @@ clean: check
 bake: check
 	$(MAKE) -C df-backend build
 	$(MAKE) -C df-frontend build
+	date > ${VERSION_TXT}
+	echo "${IMAGE_VER}" >> ${VERSION_TXT}
 	docker build -t ${IMAGE} .
 
 .PHONY: load

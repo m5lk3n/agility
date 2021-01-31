@@ -114,7 +114,7 @@ $ kubectl --namespace monitoring port-forward $POD_NAME 3000
 Under [Import](http://localhost:3000/dashboard/import):
 
 - load dashboard ID `1860`
-- upload dashboard "DF-dashboard-grafana.json" from this repo
+- upload dashboard "df-dashboard-grafana.json" from this repo
 
 ## Build
 
