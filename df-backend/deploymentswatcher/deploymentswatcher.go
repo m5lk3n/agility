@@ -79,7 +79,7 @@ func handleDeployments(clientset *kubernetes.Clientset) {
 		log.Fatalln(err)
 	}
 	for _, d := range list.Items {
-		log.Debugf(" * %s\n", d.Name)
+		log.Debugf(" * %s", d.Name)
 	}
 
 	log.Info("watching deployments:")
@@ -96,10 +96,10 @@ func handleDeployments(clientset *kubernetes.Clientset) {
 		switch event.Type {
 		case watch.Added:
 			if isIncluded(deployment) {
-				log.Infof(" + %s deployed in namespace %s at %d\n", deployment.Name, deployment.Namespace, time.Now().UnixNano())
+				log.Infof(" + %s deployed in namespace %s at %d", deployment.Name, deployment.Namespace, time.Now().UnixNano())
 				nodeexporter.Add(nodeexporter.Deployment{Name: deployment.Name, Namespace: deployment.Namespace})
 			} else {
-				log.Infof(" - %s deployed in namespace %s but excluded from watching as configured\n", deployment.Name, deployment.Namespace)
+				log.Infof(" - %s deployed in namespace %s but excluded from watching as configured", deployment.Name, deployment.Namespace)
 			}
 		}
 	}

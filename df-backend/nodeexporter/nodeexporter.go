@@ -26,7 +26,7 @@ func init() {
 	r.MustRegister(deployedTotalMetric)
 	handler = promhttp.HandlerFor(r, promhttp.HandlerOpts{})
 
-	// CLI equivalent:
+	// the above renders the following flag useless:
 	// https://github.com/prometheus/node_exporter/pull/1148
 	// --web.disable-exporter-metrics
 }
@@ -39,6 +39,7 @@ type Deployment struct {
 
 // Add a deployment incrementing corresponding counter
 func Add(deployment Deployment) {
+	// TODO: sync.Mutex?
 	deployedTotalMetric.WithLabelValues(deployment.Namespace, deployment.Name).Inc()
 }
 
@@ -48,6 +49,6 @@ func Start() {
 	const endpoint = "/metrics"
 
 	http.Handle(endpoint, handler)
-	log.Infof("Node exporter serving from http://localhost%s%s", port, endpoint)
+	log.Infof("node exporter serving from http://localhost%s%s\n", port, endpoint)
 	log.Fatal(http.ListenAndServe(port, nil))
 }
