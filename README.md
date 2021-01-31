@@ -182,7 +182,7 @@ ConfigMap:
 
 ### Reading List
 
-- [Understanding go.sum and go.mod file in Go (Golang)](https://golangbyexample.com/go-mod-sum-module/)
+- PromQL [Query examples](https://prometheus.io/docs/prometheus/latest/querying/examples/)
 
 ## Deploying
 
