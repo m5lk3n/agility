@@ -183,6 +183,22 @@ $ kubectl --namespace k8s-df port-forward $POD_NAME 8088:80
 $ kubectl --namespace k8s-df port-forward $POD_NAME 8089:8080
 ```
 
+## Configure DF Node Exporter in Prometheus
+
+Add the following snippet to `prometheus-server`'s Configmap under *scrape_configs*:
+
+```yaml
+scrape_configs:
+- job_name: 'df_node_exporter_metrics'
+  scrape_interval: 5s # for testing only
+  metrics_path: /metrics
+  static_configs:
+    - targets:
+      - k8s-df-df-backend.k8s-df.svc:8080
+```
+
+Remove the `prometheus-server` pod to force a restart.
+
 ## Testing
 
 Run a K8s cluster locally.
