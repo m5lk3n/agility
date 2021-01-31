@@ -95,13 +95,26 @@ $ helm install grafana grafana/grafana --namespace monitoring
 #
 ```
 
+Get the Grafana URL by running these commands in the same shell:
+
+```bash
+# get the initial admin password:
+$ kubectl get secret --namespace monitoring grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+$ export POD_NAME=$(kubectl get pods --namespace monitoring -l "app.kubernetes.io/name=grafana,app.kubernetes.io/instance=grafana" -o jsonpath="{.items[0].metadata.name}")
+$ kubectl --namespace monitoring port-forward $POD_NAME 3000
+# browse to localhost:3000
+```
+
 #### Configure Prometheus as a Data Source in Grafana
 
 ![Connect Grafana Prometheus](prometheus_as_data_source_in_grafana.png)
 
 #### Import Prometheus Dashboard in Grafana
 
-Under [Import](http://localhost:3000/dashboard/import) load dashboard ID `1860`.
+Under [Import](http://localhost:3000/dashboard/import):
+
+- load dashboard ID `1860`
+- upload dashboard "DF-dashboard-grafana.json" from this repo
 
 ## Build
 
