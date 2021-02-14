@@ -1,3 +1,10 @@
 # To do
 
-- rename k8s-df to agility
+- Rename k8s-df to magility
+- Rename config to configmap
+- Fix dying deploymentswatcher
+
+## Open
+
+- Retrospective setup: How long is `kubectl get deployments -A` going back?
+  - Check: https://www.weave.works/blog/how-many-kubernetes-replicasets-are-in-your-cluster-

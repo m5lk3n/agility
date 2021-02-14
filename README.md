@@ -184,16 +184,20 @@ ConfigMap:
 
 - PromQL [Query examples](https://prometheus.io/docs/prometheus/latest/querying/examples/)
 
-## Deploying
+## Deployment
 
 ```bash
-$ cd k8s
-$ ./k8s
-$ export POD_NAME=$(kubectl get pods --namespace k8s-df -l "app=k8s-df" -o jsonpath="{.items[0].metadata.name}")
+# from this project directory
+$ helm install magility ./chart
+```
+
+## Access
+
+```bash
 # forward local port 8088 to df-frontend port (80), to enable: curl localhost:8088
-$ kubectl --namespace k8s-df port-forward $POD_NAME 8088:80
+$ helper/expose-df-frontend.sh
 # forward local port 8089 to df-backend (node-exporter) port (8080), to enable: curl localhost:8089/metrics
-$ kubectl --namespace k8s-df port-forward $POD_NAME 8089:8080
+$ helper/expose-df-backend.sh
 ```
 
 ## Configure DF Node Exporter in Prometheus
@@ -225,10 +229,15 @@ $ go run main.go
 
 ```bash
 # shell 2
-# deploy ...
-$ kubectl create deployment hello-node --image=k8s.gcr.io/echoserver:1.4
-# ... delete ...
-$ kubectl delete deployment hello-node
-# ... deploy
-$ kubectl create deployment hello-node --image=k8s.gcr.io/echoserver:1.4
+# run some dummy deployments ...
+$ helper/deploy-50-hello-nodes.sh
+```
+
+## Troubleshooting
+
+### Helm
+
+```bash
+# from this project folder
+$ helm install --debug --dry-run magility ./chart
 ```

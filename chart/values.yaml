@@ -1,0 +1,12 @@
+image:
+  version: 0.0.0
+  pullPolicy: Always
+
+resources: {}
+  # TODO
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi

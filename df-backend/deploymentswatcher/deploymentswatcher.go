@@ -29,10 +29,9 @@ var (
 )
 
 func readConfigMap(clientset *kubernetes.Clientset) {
-
 	configMapClient := clientset.CoreV1().ConfigMaps(*namespace)
 
-	configMap, err := configMapClient.Get(context.TODO(), "k8s-df-config", metav1.GetOptions{})
+	configMap, err := configMapClient.Get(context.TODO(), "k8s-df-configmap" /* configMapName */, metav1.GetOptions{})
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -42,7 +41,6 @@ func readConfigMap(clientset *kubernetes.Clientset) {
 }
 
 func createRegexp(pattern string) *regexp.Regexp {
-
 	r, err := regexp.Compile(pattern)
 	if err != nil {
 		log.Warnf("could not create regexp for pattern '%s', skipping!", pattern)
@@ -53,7 +51,6 @@ func createRegexp(pattern string) *regexp.Regexp {
 }
 
 func isIncluded(deployment *v1.Deployment) bool {
-
 	if excludeNames != nil {
 		if excludeNames.MatchString(deployment.Name) {
 			return false
@@ -70,7 +67,6 @@ func isIncluded(deployment *v1.Deployment) bool {
 }
 
 func handleDeployments(clientset *kubernetes.Clientset) {
-
 	deploymentsClient := clientset.AppsV1().Deployments(apiv1.NamespaceAll)
 
 	log.Debugln("listing deployments:")
@@ -122,5 +118,6 @@ func Start() {
 	}
 
 	readConfigMap(clientset)
-	handleDeployments(clientset)
+	handleDeployments(clientset) // blocking call
+	log.Fatalln("deploymentswatcher stopped")
 }

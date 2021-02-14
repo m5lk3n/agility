@@ -18,7 +18,6 @@ var deployedTotalMetric = prometheus.NewCounterVec(
 var handler http.Handler
 
 func init() {
-
 	// https://stackoverflow.com/questions/35117993/how-to-disable-go-collector-metrics-in-prometheus-client-golang:
 	// "go get rid of any additional metrics
 	//  we have to expose our metrics with a custom registry"

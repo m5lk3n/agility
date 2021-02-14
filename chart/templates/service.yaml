@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: k8s-df
+  name: k8s-df-df-backend
+  namespace: k8s-df
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: k8s-df
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: k8s-df
+  name: k8s-df-df-frontend
+  namespace: k8s-df
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: k8s-df
+  type: ClusterIP

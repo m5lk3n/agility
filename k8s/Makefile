@@ -30,8 +30,8 @@ install: check
 	# add CPU and memory limits and requests to the creation:
 	kubectl create deployment --image=${IMAGE} ${NAME} --namespace=${NAMESPACE}
 	kubectl set serviceaccount deployment ${NAME} k8s-df-serviceaccount --namespace=${NAMESPACE}
-	kubectl expose deployment ${NAME} --port=80 --name=${NAME}-df-frontend --namespace=${NAMESPACE}
 	kubectl expose deployment ${NAME} --port=8080 --name=${NAME}-df-backend --namespace=${NAMESPACE}
+	kubectl expose deployment ${NAME} --port=80 --name=${NAME}-df-frontend --namespace=${NAMESPACE}
 
 .PHONY: all
 all: uninstall install

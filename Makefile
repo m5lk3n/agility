@@ -24,6 +24,7 @@ check:
 .PHONY: clean
 clean: check
 	docker rmi ${IMAGE}
+	docker exec -it kind-control-plane crictl rmi ${IMAGE}
 
 .PHONY: bake
 bake: check
@@ -40,7 +41,7 @@ load: check
 
 .PHONY: redeploy
 redeploy: check
-	$(MAKE) -C k8s all
+	helm install magility --set image.version=${IMAGE_VER} ./chart
 
 .PHONY: new
 new: bake load redeploy
