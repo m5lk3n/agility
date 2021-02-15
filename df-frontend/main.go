@@ -14,9 +14,9 @@ var (
 	nodeexporterURL *string
 )
 
-// LivenessHandler returns HTTP 501, use ReadinessHandler instead
+// LivenessHandler always returns HTTP 200, use ReadinessHandler instead
 func LivenessHandler(c *gin.Context) {
-	c.JSON(http.StatusNotImplemented, gin.H{"message": "use readiness endpoint (/ready)", "status": http.StatusNotImplemented})
+	c.JSON(http.StatusOK, gin.H{"message": "alive", "status": http.StatusOK})
 }
 
 // ReadinessHandler indicates HTTP 200 if the df-backend's nodeexporter serves metrics, otherwise HTTP 503

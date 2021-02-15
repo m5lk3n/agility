@@ -17,22 +17,22 @@ spec:
     spec:
       containers:
       - image: lttl.dev/k8s-df:{{ .Values.image.version }}
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         name: k8s-df
-        livenessProbe:
-          httpGet:
-            scheme: HTTP
-            path: /ready
-            port: 80
-          initialDelaySeconds: 1
-          periodSeconds: 3
+#        livenessProbe:
+#          httpGet:
+#            scheme: HTTP
+#            path: /healthy
+#            port: 80
+#          initialDelaySeconds: 1
+#          periodSeconds: 3
         readinessProbe:
           httpGet:
             scheme: HTTP
             path: /ready
             port: 80
-          initialDelaySeconds: 1
-          periodSeconds: 3
+          initialDelaySeconds: 2
+          periodSeconds: 5
         resources: {}
       serviceAccount: k8s-df-serviceaccount
       serviceAccountName: k8s-df-serviceaccount

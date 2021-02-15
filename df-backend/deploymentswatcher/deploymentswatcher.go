@@ -87,7 +87,8 @@ func handleDeployments(clientset *kubernetes.Clientset) {
 	for event := range ch {
 		deployment, ok := event.Object.(*v1.Deployment)
 		if !ok {
-			log.Fatalln("unexpected type")
+			log.Warningln("unexpected type in result channel")
+			continue
 		}
 		switch event.Type {
 		case watch.Added:

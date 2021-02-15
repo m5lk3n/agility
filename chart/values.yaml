@@ -1,6 +1,6 @@
 image:
   version: 0.0.0
-  pullPolicy: Always
+  pullPolicy: IfNotPresent # Always
 
 resources: {}
   # TODO

@@ -1,6 +1,7 @@
 
 IMAGE = lttl.dev/k8s-df:${IMAGE_VER}
 VERSION_TXT = version.txt
+HELM_RELEASE = magility
 
 # default target
 .PHONY: help
@@ -25,6 +26,7 @@ check:
 clean: check
 	docker rmi ${IMAGE}
 	docker exec -it kind-control-plane crictl rmi ${IMAGE}
+	helm uninstall ${HELM_RELEASE}
 
 .PHONY: bake
 bake: check
@@ -41,7 +43,7 @@ load: check
 
 .PHONY: redeploy
 redeploy: check
-	helm install magility --set image.version=${IMAGE_VER} ./chart
+	helm install ${HELM_RELEASE} --set image.version=${IMAGE_VER} ./chart
 
 .PHONY: new
 new: bake load redeploy

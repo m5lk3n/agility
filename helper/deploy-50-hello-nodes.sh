@@ -2,9 +2,10 @@
 
 for i in {1..50}
 do
-  echo "deployment: $i"
-  kubectl delete deployment hello-node
+  deployment="hello-echo-$((i % 2))"
+  echo "deployment: $i $deployment"
+  kubectl delete deployment $deployment
   sleep 1
-  kubectl create deployment hello-node --image=k8s.gcr.io/echoserver:1.4
-  sleep 2 
+  kubectl create deployment $deployment --image=k8s.gcr.io/echoserver:1.10
+  sleep 1 
 done
