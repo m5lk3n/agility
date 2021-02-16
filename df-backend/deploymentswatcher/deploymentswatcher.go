@@ -66,23 +66,26 @@ func isIncluded(deployment *v1.Deployment) bool {
 	return true
 }
 
-func handleDeployments(clientset *kubernetes.Clientset) {
+func listDeployments(clientset *kubernetes.Clientset) {
 	deploymentsClient := clientset.AppsV1().Deployments(apiv1.NamespaceAll)
-
-	log.Debugln("listing deployments:")
 	list, err := deploymentsClient.List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		log.Fatalln(err)
 	}
+	log.Debugln("listing deployments:")
 	for _, d := range list.Items {
 		log.Debugf(" * %s", d.Name)
 	}
+}
 
-	log.Info("watching deployments:")
+func watchDeployments(clientset *kubernetes.Clientset) {
+	deploymentsClient := clientset.AppsV1().Deployments(apiv1.NamespaceAll)
 	watcher, err := deploymentsClient.Watch(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		log.Fatalln(err)
 	}
+
+	log.Info("watching deployments:")
 	ch := watcher.ResultChan()
 	for event := range ch {
 		deployment, ok := event.Object.(*v1.Deployment)
@@ -98,11 +101,14 @@ func handleDeployments(clientset *kubernetes.Clientset) {
 			} else {
 				log.Infof(" - %s deployed in namespace %s but excluded from watching as configured", deployment.Name, deployment.Namespace)
 			}
+		case watch.Error:
+			log.Errorln("error watching deployments:")
+			log.Errorf("%+v\n", event.Object)
 		}
 	}
 }
 
-// Start a deployments watcher
+// Start a deploymentswatcher
 func Start() {
 	namespace = flag.String("namespace", "k8s-df", "namespace in which deployment watcher is deployed")
 	flag.Parse()
@@ -119,6 +125,8 @@ func Start() {
 	}
 
 	readConfigMap(clientset)
-	handleDeployments(clientset) // blocking call
-	log.Fatalln("deploymentswatcher stopped")
+	for {
+		watchDeployments(clientset) // blocking call until an error occured (or Stop() is called on the underlying channel)
+		log.Errorln("deployments watching stopped, restarting...")
+	}
 }

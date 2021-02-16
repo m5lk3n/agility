@@ -10,11 +10,12 @@ help:
 	@echo
 	@echo "  where <target> is one of the following"
 	@echo
-	@echo "    clean       to remove the previously built container image with version 'IMAGE_VER'"
+	@echo "    clean       to remove the previously built container image with version 'IMAGE_VER' (incl. the version loaded to kind)"
+	@echo "    uninstall   to undeploy the application currently installed on the k8s cluster"
 	@echo "    bake        to bake a new container image as version 'IMAGE_VER'"
-	@echo "    load        to load the newly built image into kind"
-	@echo "    redeploy    to uninstall and to install the application with the loaded image"
-	@echo "    new         to run all target but clean"
+	@echo "    load        to load the newly built image (with version 'IMAGE_VER') into kind"
+	@echo "    install     to deploy the application with the loaded image (with version 'IMAGE_VER')"
+	@echo "    new         to run all target but clean and uninstall"
 	@echo
 	@echo "    help        to show this text"
 
@@ -26,6 +27,9 @@ check:
 clean: check
 	docker rmi ${IMAGE}
 	docker exec -it kind-control-plane crictl rmi ${IMAGE}
+
+.PHONY: uninstall
+uninstall: check
 	helm uninstall ${HELM_RELEASE}
 
 .PHONY: bake
@@ -41,9 +45,9 @@ load: check
 	kind load docker-image ${IMAGE}
 	docker exec -it kind-control-plane crictl images
 
-.PHONY: redeploy
-redeploy: check
+.PHONY: install
+install: check
 	helm install ${HELM_RELEASE} --set image.version=${IMAGE_VER} ./chart
 
 .PHONY: new
-new: bake load redeploy
+new: bake load install

@@ -2,11 +2,10 @@ image:
   version: 0.0.0
   pullPolicy: IfNotPresent # Always
 
-resources: {}
-  # TODO
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+resources:
+  limits:
+    cpu: 100m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 256Mi

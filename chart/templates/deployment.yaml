@@ -19,21 +19,27 @@ spec:
       - image: lttl.dev/k8s-df:{{ .Values.image.version }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         name: k8s-df
-#        livenessProbe:
-#          httpGet:
-#            scheme: HTTP
-#            path: /healthy
-#            port: 80
-#          initialDelaySeconds: 1
-#          periodSeconds: 3
+        livenessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /ready
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
         readinessProbe:
           httpGet:
             scheme: HTTP
             path: /ready
             port: 80
-          initialDelaySeconds: 2
-          periodSeconds: 5
-        resources: {}
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        resources:
+          limits:
+            cpu: {{ .Values.resources.limits.cpu }}
+            memory: {{ .Values.resources.limits.memory }}
+          requests:
+            cpu: {{ .Values.resources.requests.cpu }}
+            memory: {{ .Values.resources.requests.memory }}        
       serviceAccount: k8s-df-serviceaccount
       serviceAccountName: k8s-df-serviceaccount
 
