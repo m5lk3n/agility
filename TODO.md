@@ -1,6 +1,8 @@
 # To do
 
-- Add to Grafana dashboard: `sum_over_time(deployed_total[1d])`
+- Add to Grafana dashboard:
+  - `sum(increase(deployed_total[1y]))`?
+  - `sum_over_time(deployed_total[1d])`?
 - Rename k8s-df to magility
 - Rename config to configmap
 - Fix dying deploymentswatcher
