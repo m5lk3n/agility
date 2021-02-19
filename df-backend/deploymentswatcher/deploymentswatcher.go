@@ -110,7 +110,7 @@ func watchDeployments(clientset *kubernetes.Clientset) {
 
 // Start a deploymentswatcher
 func Start() {
-	namespace = flag.String("namespace", "k8s-df", "namespace in which deployment watcher is deployed")
+	namespace = flag.String("namespace", "agility", "namespace in which deployment watcher is deployed")
 	flag.Parse()
 	logflag.Parse() // Call after regular flag.Parse()
 

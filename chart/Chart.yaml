@@ -1,6 +1,6 @@
 apiVersion: v2
-name: magility
-description: A Helm chart for magility
+name: agility
+description: A Helm chart for agility
 
 type: application
 

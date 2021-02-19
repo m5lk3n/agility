@@ -4,7 +4,7 @@ metadata:
   labels:
     app: k8s-df
   name: k8s-df-df-backend
-  namespace: k8s-df
+  namespace: {{ .Release.Namespace }}
 spec:
   ports:
   - port: 8080
@@ -20,7 +20,7 @@ metadata:
   labels:
     app: k8s-df
   name: k8s-df-df-frontend
-  namespace: k8s-df
+  namespace: {{ .Release.Namespace }}
 spec:
   ports:
   - port: 80

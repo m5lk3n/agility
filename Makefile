@@ -1,7 +1,8 @@
 
 IMAGE = lttl.dev/k8s-df:${IMAGE_VER}
 VERSION_TXT = version.txt
-HELM_RELEASE = magility
+HELM_RELEASE = agility
+NAMESPACE = agility
 
 # default target
 .PHONY: help
@@ -30,7 +31,7 @@ clean: check
 
 .PHONY: uninstall
 uninstall: check
-	helm uninstall ${HELM_RELEASE}
+	helm uninstall --namespace ${NAMESPACE} ${HELM_RELEASE}
 
 .PHONY: bake
 bake: check
@@ -47,7 +48,7 @@ load: check
 
 .PHONY: install
 install: check
-	helm install ${HELM_RELEASE} --set image.version=${IMAGE_VER} ./chart
+	helm install --namespace ${NAMESPACE} --create-namespace --set image.version=${IMAGE_VER} ${HELM_RELEASE} ./chart
 
 .PHONY: new
 new: bake load install

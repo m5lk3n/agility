@@ -1,4 +1,4 @@
-# k8s-df
+# agility
 
 **`export IMAGE_VER` before flight!**
 
@@ -188,7 +188,7 @@ ConfigMap:
 
 ```bash
 # from this project directory
-$ helm install magility ./chart
+$ make install
 ```
 
 ## Access
@@ -211,7 +211,7 @@ scrape_configs:
   metrics_path: /metrics
   static_configs:
     - targets:
-      - k8s-df-df-backend.k8s-df.svc:8080
+      - k8s-df-df-backend.agility.svc:8080
 ```
 
 Remove the `prometheus-server` pod to force a restart.
@@ -239,5 +239,5 @@ $ helper/deploy-50-hello-nodes.sh
 
 ```bash
 # from this project folder
-$ helm install --debug --dry-run magility ./chart
+$ helm install --namespace agility --debug --dry-run agility ./chart
 ```

@@ -4,7 +4,7 @@ metadata:
   labels:
     app: k8s-df
   name: k8s-df
-  namespace: k8s-df
+  namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
   selector:
