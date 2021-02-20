@@ -2,30 +2,30 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: k8s-df
-  name: k8s-df-df-backend
+    app: {{ .Chart.Name }}-df
+  name: {{ .Chart.Name }}-df-backend
   namespace: {{ .Release.Namespace }}
 spec:
   ports:
-  - port: 8080
+  - port: {{ .Values.ports.dfBackend }}
     protocol: TCP
-    targetPort: 8080
+    targetPort: {{ .Values.ports.dfBackend }}
   selector:
-    app: k8s-df
+    app: {{ .Chart.Name }}-df
   type: ClusterIP
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: k8s-df
-  name: k8s-df-df-frontend
+    app: {{ .Chart.Name }}-df
+  name: {{ .Chart.Name }}-df-frontend
   namespace: {{ .Release.Namespace }}
 spec:
   ports:
-  - port: 80
+  - port: {{ .Values.ports.dfFrontend }}
     protocol: TCP
-    targetPort: 80
+    targetPort: {{ .Values.ports.dfFrontend }}
   selector:
-    app: k8s-df
+    app: {{ .Chart.Name }}-df
   type: ClusterIP

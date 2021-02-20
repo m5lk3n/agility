@@ -1,4 +1,4 @@
-# docker build -t lttl.dev/k8s-df .
+# docker build -t lttl.dev/agility-df .
 FROM alpine:3.13.0
 COPY df-backend/df-backend /
 COPY df-frontend/static/ /static/

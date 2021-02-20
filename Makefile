@@ -1,5 +1,4 @@
-
-IMAGE = lttl.dev/k8s-df:${IMAGE_VER}
+IMAGE = lttl.dev/agility-df:${IMAGE_VER}
 VERSION_TXT = version.txt
 HELM_RELEASE = agility
 NAMESPACE = agility
@@ -22,7 +21,7 @@ help:
 
 .PHONY: check
 check:
-	[ "${IMAGE_VER}" != "" ] || echo "IMAGE_VER has to be set"
+	[ "${IMAGE_VER}" != "" ] || echo "'export IMAGE_VER=' has to be set, last known is: " && cat ${VERSION_TXT}
 
 .PHONY: clean
 clean: check
@@ -37,8 +36,7 @@ uninstall: check
 bake: check
 	$(MAKE) -C df-backend build
 	$(MAKE) -C df-frontend build
-	date > ${VERSION_TXT}
-	echo "${IMAGE_VER}" >> ${VERSION_TXT}
+	echo "${IMAGE_VER}" > ${VERSION_TXT}
 	docker build -t ${IMAGE} .
 
 .PHONY: load

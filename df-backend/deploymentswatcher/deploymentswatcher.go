@@ -19,19 +19,20 @@ import (
 
 // flags (other than -log)
 var (
-	namespace *string
+	namespace     *string
+	configmapName *string
 )
 
 // based upon config map keys
 var (
-	excludeNames      *regexp.Regexp // see exclude-pattern-names
-	excludeNamespaces *regexp.Regexp // see exclude-pattern-namespaces
+	excludeNames      *regexp.Regexp // see exclude-regexp-pattern-names
+	excludeNamespaces *regexp.Regexp // see exclude-regexp-pattern-namespaces
 )
 
 func readConfigMap(clientset *kubernetes.Clientset) {
 	configMapClient := clientset.CoreV1().ConfigMaps(*namespace)
 
-	configMap, err := configMapClient.Get(context.TODO(), "k8s-df-configmap" /* configMapName */, metav1.GetOptions{})
+	configMap, err := configMapClient.Get(context.TODO(), *configmapName, metav1.GetOptions{})
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -111,6 +112,7 @@ func watchDeployments(clientset *kubernetes.Clientset) {
 // Start a deploymentswatcher
 func Start() {
 	namespace = flag.String("namespace", "agility", "namespace in which deployment watcher is deployed")
+	configmapName = flag.String("configmapName", "agility-configmap", "name of configmap used by deployment watcher")
 	flag.Parse()
 	logflag.Parse() // Call after regular flag.Parse()
 

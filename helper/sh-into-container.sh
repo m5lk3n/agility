@@ -5,6 +5,6 @@ if [ "${IMAGE_VER}" == "" ]; then
   exit 1
 fi
 
-IMAGE="lttl.dev/k8s-df:${IMAGE_VER}"
+IMAGE="lttl.dev/agility-df:${IMAGE_VER}"
 
-docker run --name k8s-df --rm -i -t ${IMAGE} sh
+docker run --name agility-df --rm -i -t ${IMAGE} sh

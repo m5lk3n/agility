@@ -2,37 +2,37 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: k8s-df
-  name: k8s-df
+    app: {{ .Chart.Name }}-df
+  name: {{ .Chart.Name }}-df
   namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: k8s-df
+      app: {{ .Chart.Name }}-df
   template:
     metadata:
       labels:
-        app: k8s-df
+        app: {{ .Chart.Name }}-df
     spec:
       containers:
-      - image: lttl.dev/k8s-df:{{ .Values.image.version }}
+      - image: lttl.dev/{{ .Chart.Name }}-df:{{ .Values.image.version }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
-        name: k8s-df
+        name: {{ .Chart.Name }}-df
         livenessProbe:
           httpGet:
             scheme: HTTP
-            path: /ready
-            port: 80
-          initialDelaySeconds: 5
-          periodSeconds: 5
+            path: /ready # don't use /healthy here
+            port: {{ .Values.ports.dfFrontend }}
+          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
         readinessProbe:
           httpGet:
             scheme: HTTP
             path: /ready
-            port: 80
-          initialDelaySeconds: 10
-          periodSeconds: 10
+            port: {{ .Values.ports.dfFrontend }}
+          initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
         resources:
           limits:
             cpu: {{ .Values.resources.limits.cpu }}
@@ -40,6 +40,6 @@ spec:
           requests:
             cpu: {{ .Values.resources.requests.cpu }}
             memory: {{ .Values.resources.requests.memory }}        
-      serviceAccount: k8s-df-serviceaccount
-      serviceAccountName: k8s-df-serviceaccount
+      serviceAccount: {{ .Chart.Name }}-df-serviceaccount
+      serviceAccountName: {{ .Chart.Name }}-df-serviceaccount
 

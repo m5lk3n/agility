@@ -5,7 +5,7 @@ if [ "${IMAGE_VER}" == "" ]; then
   exit 1
 fi
 
-IMAGE="lttl.dev/k8s-df:${IMAGE_VER}"
+IMAGE="lttl.dev/agility-df:${IMAGE_VER}"
 CONTAINER=$(docker ps -aqf "ancestor=${IMAGE}")
 
 if [ "${CONTAINER}" != "" ]; then

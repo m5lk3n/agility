@@ -211,7 +211,7 @@ scrape_configs:
   metrics_path: /metrics
   static_configs:
     - targets:
-      - k8s-df-df-backend.agility.svc:8080
+      - agility-df-backend.agility.svc:8080
 ```
 
 Remove the `prometheus-server` pod to force a restart.

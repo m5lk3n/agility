@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: k8s-df-configmap
-data:
-  exclude-regexp-pattern-names: ^local-path-provisioner$
-  exclude-regexp-pattern-namespaces: ^kube-|^monitoring$|^k8s-df$

@@ -2,6 +2,18 @@ image:
   version: 0.0.0
   pullPolicy: IfNotPresent # Always
 
+livenessProbe:
+  initialDelaySeconds: 5
+  periodSeconds: 5
+
+readinessProbe:
+  initialDelaySeconds: 10
+  periodSeconds: 10
+
+ports:
+  dfFrontend: 80
+  dfBackend: 8080
+
 resources:
   limits:
     cpu: 100m
