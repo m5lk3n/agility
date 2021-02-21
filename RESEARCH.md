@@ -19,3 +19,9 @@
 - https://rsmitty.github.io/Prometheus-Exporters/
 - https://rsmitty.github.io/Prometheus-Exporters-Revamp/
 - https://github.com/prometheus/node_exporter/blob/master/node_exporter.go
+
+## Article Refs
+
+- https://itrevolution.com/book/accelerate/ | https://www.google.com/books/edition/_/85XHAQAACAAJ?hl=en
+- https://thenewstack.io/how-devops-affects-business-stakeholders-and-leaders/
+- https://www.youtube.com/watch?v=iUFpRFvlT2U

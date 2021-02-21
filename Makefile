@@ -29,7 +29,7 @@ clean: check
 	docker exec -it kind-control-plane crictl rmi ${IMAGE}
 
 .PHONY: uninstall
-uninstall: check
+uninstall:
 	helm uninstall --namespace ${NAMESPACE} ${HELM_RELEASE}
 
 .PHONY: bake
