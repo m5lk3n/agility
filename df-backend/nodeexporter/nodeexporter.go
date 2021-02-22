@@ -38,7 +38,6 @@ type Deployment struct {
 
 // Add a deployment incrementing corresponding counter
 func Add(deployment Deployment) {
-	// TODO: sync.Mutex?
 	deployedTotalMetric.WithLabelValues(deployment.Namespace, deployment.Name).Inc()
 }
 

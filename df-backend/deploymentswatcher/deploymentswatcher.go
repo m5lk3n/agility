@@ -73,6 +73,7 @@ func listDeployments(clientset *kubernetes.Clientset) {
 	if err != nil {
 		log.Fatalln(err)
 	}
+
 	log.Debugln("listing deployments:")
 	for _, d := range list.Items {
 		log.Debugf(" * %s", d.Name)
@@ -94,6 +95,7 @@ func watchDeployments(clientset *kubernetes.Clientset) {
 			log.Warningln("unexpected type in result channel")
 			continue
 		}
+
 		switch event.Type {
 		case watch.Added:
 			if isIncluded(deployment) {

@@ -10,11 +10,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// flags
 var (
 	nodeexporterURL *string
 )
 
-// LivenessHandler always returns HTTP 200, use ReadinessHandler instead
+// LivenessHandler always returns HTTP 200, consider using ReadinessHandler instead
 func LivenessHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "alive", "status": http.StatusOK})
 }
