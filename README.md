@@ -123,10 +123,10 @@ Under [Import](http://localhost:3000/dashboard/import):
 - [Add client-go as a dependency](https://github.com/jtestard/client-go/blob/master/INSTALL.md#add-client-go-as-a-dependency):
 
 ```bash
-michael@x250:~/go/src/lttl.dev/k8s-df/deployments-watcher
+michael@x250:~/go/src/lttl.dev/agility/deployments-watcher
 $ make init
 go mod init
-go: creating new go.mod: module lttl.dev/k8s-df/deployments-watcher
+go: creating new go.mod: module lttl.dev/agility/deployments-watcher
 $ make get
 go get k8s.io/client-go@v0.19.1
 # ...

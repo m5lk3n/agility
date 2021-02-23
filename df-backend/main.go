@@ -1,8 +1,8 @@
 package main
 
 import (
-	deploymentswatcher "lttl.dev/k8s-df/df-backend/deploymentswatcher"
-	nodeexporter "lttl.dev/k8s-df/df-backend/nodeexporter"
+	deploymentswatcher "lttl.dev/agility/df-backend/deploymentswatcher"
+	nodeexporter "lttl.dev/agility/df-backend/nodeexporter"
 )
 
 func main() {

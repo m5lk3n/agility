@@ -14,7 +14,7 @@ help:
 
 .PHONY: init
 init:
-	go mod init lttl.dev/k8s-df/df-backend
+	go mod init lttl.dev/agility/df-backend
 
 .PHONY: get
 get:

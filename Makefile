@@ -21,7 +21,7 @@ help:
 
 .PHONY: check
 check:
-	[ "${IMAGE_VER}" != "" ] || echo "'export IMAGE_VER=' has to be set, last known is: " && cat ${VERSION_TXT}
+	[ "${IMAGE_VER}" != "" ] || echo "'export IMAGE_VER=' has to be set, last known is: " && touch ${VERSION_TXT} && cat ${VERSION_TXT}
 
 .PHONY: clean
 clean: check
@@ -36,7 +36,8 @@ uninstall:
 bake: check
 	$(MAKE) -C df-backend build
 	$(MAKE) -C df-frontend build
-	echo "${IMAGE_VER}" > ${VERSION_TXT}
+	date > ${VERSION_TXT}
+	echo "${IMAGE_VER}" >> ${VERSION_TXT}
 	docker build -t ${IMAGE} .
 
 .PHONY: load
