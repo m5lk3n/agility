@@ -15,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 3,
+  "id": 1,
   "links": [],
   "panels": [
     {
@@ -494,7 +494,7 @@
       "steppedLine": true,
       "targets": [
         {
-          "expr": "rate(deployed_total[1h])",
+          "expr": "rate(deployed_total[1d])*60*60",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -504,7 +504,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Deployments Rate per App",
+      "title": "Daily Deployments Rate per App",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -557,5 +557,5 @@
   "timezone": "",
   "title": "Deployment Frequency",
   "uid": "1Lokb2YMz",
-  "version": 3
+  "version": 2
 }

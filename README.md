@@ -212,6 +212,15 @@ scrape_configs:
   static_configs:
     - targets:
       - agility-df-backend.agility.svc:8080
+  metric_relabel_configs:
+    - source_labels: [ job ]
+      target_label: job
+      action: replace
+      replacement: ''
+    - source_labels: [ instance ]
+      target_label: instance
+      action: replace
+      replacement: ''
 ```
 
 Remove the `prometheus-server` pod to force a restart.
@@ -241,3 +250,7 @@ $ helper/deploy-50-hello-nodes.sh
 # from this project folder
 $ helm install --namespace agility --debug --dry-run agility ./chart
 ```
+
+## Outlook
+
+- Store deployed_total in DB

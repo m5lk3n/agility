@@ -25,3 +25,15 @@
 - https://itrevolution.com/book/accelerate/ | https://www.google.com/books/edition/_/85XHAQAACAAJ?hl=en
 - https://thenewstack.io/how-devops-affects-business-stakeholders-and-leaders/
 - https://www.youtube.com/watch?v=iUFpRFvlT2U
+
+From the latter (TODO: check against DF values for high-performance teams from Forsgren):
+
+DF ("throughput") per day per project
+
+| Percentile | 2020 Value | 2019 Value |
+| --- | --- | --- |
+| 5p | 0.03 | 0.03 |
+| 50p | 0.70 | 0.80 |
+| 90p | 16.03 | 13.00 |
+| 95p | 32.125 | 25.47 |
+| Mean | 8.22 | 5.76 |

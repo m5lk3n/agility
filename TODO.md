@@ -1,5 +1,7 @@
 # To do
 
+- Read PromQL
+- Relabel measurements to app@namespace
 - Add to Grafana dashboard:
   - `sum(increase(deployed_total[1y]))`?
   - `sum_over_time(deployed_total[1d])`?
