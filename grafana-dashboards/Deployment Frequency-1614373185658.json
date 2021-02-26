@@ -82,7 +82,7 @@
         {
           "expr": "increase(deployed_total[1y])",
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": "{{app}} ({{namespace}})",
           "refId": "A"
         }
       ],
@@ -290,7 +290,7 @@
         {
           "expr": "sum by (namespace) ( deployed_total )",
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": "{{namespace}}",
           "refId": "A"
         }
       ],
@@ -400,7 +400,7 @@
         {
           "expr": "deployed_total",
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": "{{app}} ({{namespace}})",
           "refId": "A"
         }
       ],
@@ -496,7 +496,7 @@
         {
           "expr": "rate(deployed_total[1d])*60*60",
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": "{{app}} ({{namespace}})",
           "refId": "A"
         }
       ],

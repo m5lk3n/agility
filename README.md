@@ -113,8 +113,8 @@ $ kubectl --namespace monitoring port-forward $POD_NAME 3000
 
 Under [Import](http://localhost:3000/dashboard/import):
 
-- load dashboard ID `1860`
-- upload dashboard "df-dashboard-grafana.json" from this repo
+- Upload [these dashboards](grafana-dashboards/)
+- Optional: load dashboard ID `1860`
 
 ## Build
 
@@ -212,6 +212,7 @@ scrape_configs:
   static_configs:
     - targets:
       - agility-df-backend.agility.svc:8080
+  # optional, remove system-generated labels:
   metric_relabel_configs:
     - source_labels: [ job ]
       target_label: job
