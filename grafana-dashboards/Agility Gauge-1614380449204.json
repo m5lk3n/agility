@@ -29,11 +29,15 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "super-light-green",
+                "color": "light-red",
                 "value": null
               },
               {
-                "color": "semi-dark-green",
+                "color": "light-yellow",
+                "value": 5
+              },
+              {
+                "color": "light-green",
                 "value": 8
               }
             ]
@@ -89,5 +93,5 @@
   "timezone": "",
   "title": "Agility Gauge",
   "uid": "5j67wpsGz",
-  "version": 6
+  "version": 7
 }
