@@ -10,7 +10,7 @@ import (
 
 var deployedTotalMetric = prometheus.NewCounterVec(
 	prometheus.CounterOpts{
-		Name: "deployed_total",
+		Name: "deployed_count",
 		Help: "Amount of app deployments into the cluster namespace"},
 	[]string{"namespace", "app"},
 )

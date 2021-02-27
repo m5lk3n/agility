@@ -21,7 +21,19 @@
 
 ### Metric idea
 
-- `deployed{app=<name>,namespace=<name>}=<UnixTimeOfWhen>?` (observation time? deployment time?)
+1. `deployed{app=<name>,namespace=<name>}=<UnixTimeOfDeployment>`:
+
+- same as `kube_deployment_created`
+- doesn't capture all counts, only the latest timestamp => misses hits in between scraps
+- less intuitive than increasing count
+- ties it to timestamp database
+
+2. `deployed{app=<name>,namespace=<name>}=<numOfDeployments>`:
+
+- atomic count, requires history
+- conceptually easier to understand than `UnixTimeOfDeployment` approach
+
+=> 2. but with in-memory limitation, negtible in the long-run as we're primarily interested in recent agility (keep it above certain threshold)
 
 ### Design idea
 
@@ -254,4 +266,4 @@ $ helm install --namespace agility --debug --dry-run agility ./chart
 
 ## Outlook
 
-- Store deployed_total in DB
+- Store deployed_count in DB
