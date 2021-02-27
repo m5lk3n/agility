@@ -88,7 +88,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Daily Deployment Rate ",
+      "title": "Daily Deployment Frequency ",
       "type": "gauge"
     },
     {
@@ -161,7 +161,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Weekly Deployment Rate",
+      "title": "Weekly Deployment Frequency",
       "type": "gauge"
     }
   ],
@@ -180,5 +180,5 @@
   "timezone": "",
   "title": "Short-term Throughput Gauges",
   "uid": "5j67wpsGz",
-  "version": 12
+  "version": 13
 }

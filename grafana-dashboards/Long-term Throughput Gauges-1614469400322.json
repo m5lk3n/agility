@@ -80,7 +80,7 @@
       "pluginVersion": "7.3.5",
       "targets": [
         {
-          "expr": "rate(deployed_count[30d])*60*60*7*30",
+          "expr": "rate(deployed_count[30d])*60*60*30",
           "interval": "",
           "legendFormat": "{{app}} ({{namespace}})",
           "refId": "A"
@@ -162,6 +162,7 @@
       "type": "gauge"
     }
   ],
+  "refresh": "1m",
   "schemaVersion": 26,
   "style": "dark",
   "tags": [],
@@ -176,5 +177,5 @@
   "timezone": "",
   "title": "Long-term Throughput Gauges",
   "uid": "Klm1fLyGz",
-  "version": 3
+  "version": 4
 }
