@@ -28,12 +28,18 @@
 - less intuitive than increasing count
 - ties it to timestamp database
 
-2. `deployed{app=<name>,namespace=<name>}=<numOfDeployments>`:
+1. `deployed{app=<name>,namespace=<name>}=<numOfDeployments>`:
 
 - atomic count, requires history
 - conceptually easier to understand than `UnixTimeOfDeployment` approach
 
-=> 2. but with in-memory limitation, negtible in the long-run as we're primarily interested in recent agility (keep it above certain threshold)
+=> 2. but with in-memory limitation, negligible in the long-run as we're primarily interested in recent agility (keep it above certain threshold)
+
+Example:
+
+1. Get the increase in number of deployments (for an app), e.g. for the last 24h: `increase(deployed_count[24h])`
+
+2. Compute the frequency, e.g. for the last week: `increase(deployed_count[7d])/7`:
 
 ### Design idea
 

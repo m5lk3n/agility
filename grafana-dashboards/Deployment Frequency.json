@@ -91,7 +91,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Deployments per App",
+      "title": "Deployments per App (Namespace)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -177,7 +177,7 @@
       "steppedLine": true,
       "targets": [
         {
-          "expr": "rate(deployed_count[1d])*60*60",
+          "expr": "increase(deployed_count[1d])",
           "interval": "",
           "legendFormat": "{{app}} ({{namespace}})",
           "refId": "A"
@@ -187,7 +187,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Daily Deployments Rate per App",
+      "title": "24h Deployments Frequency per App (Namespace)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -246,7 +246,21 @@
       "datasource": null,
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "custom": {},
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
         },
         "overrides": []
       },
@@ -288,6 +302,7 @@
         {
           "expr": "increase(deployed_count[1y])",
           "interval": "",
+          "intervalFactor": 1,
           "legendFormat": "{{app}} ({{namespace}})",
           "refId": "A"
         }
@@ -296,7 +311,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Increase Deployments Total per Year per App",
+      "title": "Last Year's Increase in Deployments Total per App (Namespace)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -557,5 +572,5 @@
   "timezone": "",
   "title": "Deployment Frequency",
   "uid": "1Lokb2YMz",
-  "version": 3
+  "version": 6
 }

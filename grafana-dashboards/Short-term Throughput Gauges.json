@@ -29,12 +29,12 @@
       },
       "id": 4,
       "panels": [],
-      "title": "Daily Deployment Frequency",
+      "title": "Last 24h Throughput",
       "type": "row"
     },
     {
       "datasource": null,
-      "description": "",
+      "description": "Last 24h's Deployment Frequency per Application (Namespace)",
       "fieldConfig": {
         "defaults": {
           "custom": {},
@@ -80,7 +80,7 @@
       "pluginVersion": "7.3.5",
       "targets": [
         {
-          "expr": "rate(deployed_count[1d])*60*60",
+          "expr": "increase(deployed_count[1d])",
           "interval": "",
           "legendFormat": "{{app}} ({{namespace}})",
           "refId": "A"
@@ -88,7 +88,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Daily Deployment Frequency ",
+      "title": "Last 24h Throughput (per Application (Namespace))",
       "type": "gauge"
     },
     {
@@ -102,12 +102,12 @@
       },
       "id": 8,
       "panels": [],
-      "title": "Weekly Deployment Frequency",
+      "title": "Last Week's Throughput",
       "type": "row"
     },
     {
       "datasource": null,
-      "description": "",
+      "description": "Last Week's Deployment Frequency per Application (Namespace), Average per Day",
       "fieldConfig": {
         "defaults": {
           "custom": {},
@@ -153,7 +153,7 @@
       "pluginVersion": "7.3.5",
       "targets": [
         {
-          "expr": "rate(deployed_count[1w])*60*60*7",
+          "expr": "increase(deployed_count[7d])/7",
           "interval": "",
           "legendFormat": "{{app}} ({{namespace}})",
           "refId": "A"
@@ -161,7 +161,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Weekly Deployment Frequency",
+      "title": "Last Week's Throughput (per Application (Namespace), Average per Day)",
       "type": "gauge"
     }
   ],
@@ -180,5 +180,5 @@
   "timezone": "",
   "title": "Short-term Throughput Gauges",
   "uid": "5j67wpsGz",
-  "version": 13
+  "version": 16
 }

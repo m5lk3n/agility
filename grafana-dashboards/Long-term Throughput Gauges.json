@@ -29,12 +29,12 @@
       },
       "id": 2,
       "panels": [],
-      "title": "Monthly Deployment Frequency",
+      "title": "Last Month's Throughput",
       "type": "row"
     },
     {
       "datasource": null,
-      "description": "",
+      "description": "Last Month's Deployment Frequency per Application, (Namespace), Average per Day",
       "fieldConfig": {
         "defaults": {
           "custom": {},
@@ -80,7 +80,7 @@
       "pluginVersion": "7.3.5",
       "targets": [
         {
-          "expr": "rate(deployed_count[30d])*60*60*30",
+          "expr": "increase(deployed_count[30d])/30",
           "interval": "",
           "legendFormat": "{{app}} ({{namespace}})",
           "refId": "A"
@@ -88,7 +88,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Monthly Deployment Frequency",
+      "title": "Last Month's Throughput (per Application (Namespace), Average per Day)",
       "type": "gauge"
     },
     {
@@ -100,11 +100,12 @@
         "y": 6
       },
       "id": 6,
-      "title": "Yearly Deployment Frequency",
+      "title": "Last Year's Throughput",
       "type": "row"
     },
     {
       "datasource": null,
+      "description": "Last Year's Deployment Frequency per Application, (Namespace), Average per Day)",
       "fieldConfig": {
         "defaults": {
           "custom": {},
@@ -150,7 +151,7 @@
       "pluginVersion": "7.3.5",
       "targets": [
         {
-          "expr": "rate(deployed_count[1y])*60*60*365",
+          "expr": "increase(deployed_count[365d])/365",
           "interval": "",
           "legendFormat": "{{app}} ({{namespace}})",
           "refId": "A"
@@ -158,7 +159,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Yearly Deployment Frequency",
+      "title": "Last Year's Throughput (per Application (Namespace), Average per Day)",
       "type": "gauge"
     }
   ],
@@ -177,5 +178,5 @@
   "timezone": "",
   "title": "Long-term Throughput Gauges",
   "uid": "Klm1fLyGz",
-  "version": 4
+  "version": 7
 }
