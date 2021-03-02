@@ -1,3 +1,5 @@
+DEFAULT_IMAGE_VER = "0.1.0"
+IMAGE_VER ?= ${DEFAULT_IMAGE_VER} # can be overridden by ENV param 
 IMAGE = lttl.dev/agility-df:${IMAGE_VER}
 VERSION_TXT = version.txt
 HELM_RELEASE = agility
@@ -6,22 +8,29 @@ NAMESPACE = agility
 # default target
 .PHONY: help
 help:
+	@echo "builds, (un)deploys, ... '${HELM_RELEASE}' using docker, kind, and helm"
+	@echo
+	@echo "hint: use 'export IMAGE_VER=major.minor.patch' to overwrite the default '${DEFAULT_IMAGE_VER}'"
+	@echo
 	@echo "usage: make <target>"
 	@echo
 	@echo "  where <target> is one of the following"
 	@echo
-	@echo "    clean       to remove the previously built container image with version 'IMAGE_VER' (incl. the version loaded to kind)"
-	@echo "    uninstall   to undeploy the application currently installed on the k8s cluster"
-	@echo "    bake        to bake a new container image as version 'IMAGE_VER'"
-	@echo "    load        to load the newly built image (with version 'IMAGE_VER') into kind"
-	@echo "    install     to deploy the application with the loaded image (with version 'IMAGE_VER')"
-	@echo "    new         to run all target but clean and uninstall"
+	@echo "    clean       to remove the container image '${IMAGE}' (incl. the version loaded to kind)"
+	@echo "    uninstall   to undeploy the application '${HELM_RELEASE}' currently installed on the kind K8s cluster"
+	@echo "    bake        to bake a new container image as '${IMAGE}'"
+	@echo "    load        to load the container image ('${IMAGE}') into kind"
+	@echo "    install     to deploy the application with the loaded image ('${IMAGE}')"
+	@echo "    new         to run all targets but clean and uninstall"
 	@echo
 	@echo "    help        to show this text"
 
+# checks existence of required tool stack
 .PHONY: check
 check:
-	[ "${IMAGE_VER}" != "" ] || echo "'export IMAGE_VER=' has to be set, last known is: " && touch ${VERSION_TXT} && cat ${VERSION_TXT}
+	kind --version > /dev/null
+	helm version > /dev/null
+	docker --version > /dev/null
 
 .PHONY: clean
 clean: check
