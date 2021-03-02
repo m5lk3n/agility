@@ -1,5 +1,7 @@
 # To do
 
+- non-kind-flavored Makefile
+
 ## Check
 
 - https://www.weave.works/blog/how-many-kubernetes-replicasets-are-in-your-cluster-

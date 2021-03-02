@@ -25,7 +25,7 @@ help:
 	@echo
 	@echo "    help        to show this text"
 
-# checks existence of required tool stack
+# checks existence of required tool stack, fails if not available
 .PHONY: check
 check:
 	kind --version > /dev/null
