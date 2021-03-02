@@ -74,7 +74,7 @@ Under Grafana -> Dashboards -> Manage -> [Import](http://localhost:3000/dashboar
 - [Add client-go as a dependency](https://github.com/jtestard/client-go/blob/master/INSTALL.md#add-client-go-as-a-dependency):
 
 ```bash
-michael@x250:~/go/src/lttl.dev/agility/deployments-watcher
+# pwd is ~/go/src/lttl.dev/agility/deployments-watcher
 $ make init
 go mod init
 go: creating new go.mod: module lttl.dev/agility/deployments-watcher
@@ -191,7 +191,7 @@ $ go run main.go
 ```bash
 # shell 2
 # run some dummy deployments ...
-$ helper/deploy-50-hello-nodes.sh
+$ helper/deploy-dummy-apps.sh
 ```
 
 ## Troubleshooting
@@ -202,7 +202,3 @@ $ helper/deploy-50-hello-nodes.sh
 # from this project folder
 $ helm install --namespace agility --debug --dry-run agility ./chart
 ```
-
-## Outlook
-
-- Store deployed_count in DB
