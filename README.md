@@ -35,32 +35,37 @@ Additionally, the *deploymentwatcher* supports deployments per application and p
 
 This project is truly cloud-native, it deploys and runs on Kubernetes only. It stores its settings (aforementioned name patterns) in a configmap.
 
-Observed Kubernetes deployments are exported using Prometheus Node Exporter. Those measurements are scraped using Prometheus which is as such the de facto industry standard for monitoring on Kubernetes. Same is true for Grafana which is used for illustration purposes.
+Observed Kubernetes deployments are measured and exported using Prometheus Node Exporter. Those measurements are scraped (regularly pulled) by Prometheus, the de facto industry standard for monitoring on Kubernetes at the time of writing. Prometheus is not only a monitoring system but also a time series database to collect scraped data.
 
-## Implementation
+Another industry standard used here is Grafana which is used to illustrate the results, such as deployment rates.
 
-When it comes to Prometheus Node Exporter and measurements, the specific metric format must be determined.
+## Realization
+
 ### Metric idea
+
+Our goal is to capture deployment per app and namespace. When it comes to Prometheus Node Exporter and measurements, the specific metric format must be determined. There are at least two choices here:
 
 1. `deployed{app=<name>,namespace=<name>}=<UnixTimeOfDeployment>`:
 
-- same as `kube_deployment_created`
-- doesn't capture all counts, only the latest timestamp => misses hits in between scraps
-- less intuitive than increasing count
-- ties it to timestamp database
+Discussion:
 
-1. `deployed{app=<name>,namespace=<name>}=<numOfDeployments>`:
+- It's the same as the built-in `kube_deployment_created`.
+- It doesn't capture all counts, only the latest timestamp, i.e. there are missed hits in between scrapes
+- It's less intuitive than an increasing count
 
-- atomic count, requires history
-- conceptually easier to understand than `UnixTimeOfDeployment` approach
+2. `deployed{app=<name>,namespace=<name>}=<numOfDeployments>`:
 
-=> 2. but with in-memory limitation, negligible in the long-run as we're primarily interested in recent agility (keep it above certain threshold)
+Discussion:
 
-Example:
+- It's an atomic count which requires history
+- It's conceptually easier to grasp than the `UnixTimeOfDeployment` approach
 
-1. Get the increase in number of deployments (for an app), e.g. for the last 24h: `increase(deployed_count[24h])`
+Therefore, the latter is the chosen metric format, but in this project here with an in-memory limitation, i.e. no permanent storage for now. In the long-run, this is negligible as we're primarily interested in recent agility, keeping values above certain thresholds.
 
-2. Compute the frequency, e.g. for the last week: `increase(deployed_count[7d])/7`:
+In terms of PromQL, the Prometheus Query Language, that's e.g.:
+
+- Get the increase in number of deployments (for an app), e.g. for the last 24h: `increase(deployed_count[24h])`
+- Compute the frequency, e.g. for the last week: `increase(deployed_count[7d])/7`
 
 ### Design idea
 
