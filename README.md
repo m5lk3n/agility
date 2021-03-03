@@ -1,24 +1,45 @@
 # agility
 
-This is a cloud-native implementation of how to measure agility (read: digital transformation) using Kubernetes *Deployment Frequency* (DF) (or *Throughput*).
+This is a cloud-native implementation of how to measure agility (read: digital/DevOps transformation) using Kubernetes *Deployment Frequency* KPI.
+
+## Motivation
+
+In their book "[Accelerate - The Science Behind DevOps: Building and Scaling High Performing Technology Organizations](https://itrevolution.com/book/accelerate/)" Forsgren, Humble, and Kim list the following indicators as keys to measure agility:
+
+1. Deployment Frequency (DF) (or Throughput)
+2. Change Failure Rate
+3. Mean Time to Recover
+4. Lead Time (or Cycle Time)
+
+This project addresses the first KPI.
+
+The Deployment Frequency is the amount of deployments (to production) per time period.
+
+As per the [State of DevOps 2019](https://services.google.com/fh/files/misc/state-of-devops-2019.pdf) report, high performing teams deploy 4 times a day. For 2020, in [Data-Driven Benchmarks for High Performing Engineering Teams](https://www.youtube.com/watch?v=iUFpRFvlT2U), CircleCI observed a mean value of 8 deployments.
+
+By providing an actual implementation to determine and to visualize deployment rates, this project contributes to measure and control a DevOps transformation in an organization.
 
 ## Specification
 
 ### DF KPI
 
-- Purely based upon K8s deployments (directly via `kubectl deploy`, or indirectly via Helm or CD tooling like ArgoCD)
-- Per cluster
-- Per namespace (*support include/exclude pattern!*)
-- Per app (name) (*support include/exclude pattern!*)
-- Per aggregate (*support name pattern!*)
+This implementation is purely based upon Kubernetes deployments as containerized applications in general and this container orchestrator in particular represent the state of the art, and must therefore be the heart of a digital transformation.
 
-### Tech
+By watching deployments directly on Kubernetes using its API, any deployment, be it directly via `kubectl deploy`, or indirectly via Helm or CD tooling like ArgoCD, is captured.
 
-- Deploy and run on Kubernetes only
-- Store settings in configmap (offer restart/reload option later)
+Since this project's *deploymentwatcher* is deployed as a light-weight container on a cluster, it can also be used in different, separate environments, not only production.
+
+Additionally, the *deploymentwatcher* supports deployments per application and per namespace. For both, it supports include/exclude regexp patterns.
+
+### Stack
+
+This project is truly cloud-native, it deploys and runs on Kubernetes only. It stores its settings (aforementioned name patterns) in a configmap.
+
+Observed Kubernetes deployments are exported using Prometheus Node Exporter. Those measurements are scraped using Prometheus which is as such the de facto industry standard for monitoring on Kubernetes. Same is true for Grafana which is used for illustration purposes.
 
 ## Implementation
 
+When it comes to Prometheus Node Exporter and measurements, the specific metric format must be determined.
 ### Metric idea
 
 1. `deployed{app=<name>,namespace=<name>}=<UnixTimeOfDeployment>`:

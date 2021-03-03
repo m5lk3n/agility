@@ -4,7 +4,7 @@
 
 ## References
 
-- [Accelerate - The Science Behind DevOps : Building and Scaling High Performing Technology Organizations
+- [Accelerate - The Science Behind DevOps: Building and Scaling High Performing Technology Organizations
 By Nicole Forsgren, Jez Humble, Gene Kim · 2018](https://itrevolution.com/book/accelerate/)
 
     From [State of DevOps 2019](https://services.google.com/fh/files/misc/state-of-devops-2019.pdf):
