@@ -15,74 +15,87 @@ This project addresses the first KPI.
 
 The Deployment Frequency is the amount of deployments (to production) per time period.
 
-As per the [State of DevOps 2019](https://services.google.com/fh/files/misc/state-of-devops-2019.pdf) report, high performing teams deploy 4 times a day. For 2020, in [Data-Driven Benchmarks for High Performing Engineering Teams](https://www.youtube.com/watch?v=iUFpRFvlT2U), CircleCI observed a mean value of 8 deployments.
+As per the [State of DevOps 2019](https://services.google.com/fh/files/misc/state-of-devops-2019.pdf) report, high performing teams deploy 4 times a day. For 2020, in [Data-Driven Benchmarks for High Performing Engineering Teams](https://www.youtube.com/watch?v=iUFpRFvlT2U), CircleCI observed a mean value of 8 deployments per day.
 
-By providing an actual implementation to determine and to visualize deployment rates, this project contributes to measure and control a DevOps transformation in an organization.
+By providing an actual implementation to determine and to visualize deployment rates, this project called "agility" contributes to measure and to control a DevOps transformation in an organization.
 
 ## Specification
 
-### DF KPI
+### KPI
 
-This implementation is purely based upon Kubernetes deployments as containerized applications in general and this container orchestrator in particular represent the state of the art, and must therefore be the heart of a digital transformation.
+This project's approach is purely based upon Kubernetes deployments as containerized applications in general and the Kubernetes container orchestrator in particular represent the state of the art, and must therefore be the heart of a digital transformation nowadays.
 
 By watching deployments directly on Kubernetes using its API, any deployment, be it directly via `kubectl deploy`, or indirectly via Helm or CD tooling like ArgoCD, is captured.
 
 Since this project's *deploymentwatcher* is deployed as a light-weight container on a cluster, it can also be used in different, separate environments, not only production.
 
-Additionally, the *deploymentwatcher* supports deployments per application and per namespace. For both, it supports include/exclude regexp patterns.
+Additionally, the *deploymentwatcher* supports deployments per application and per namespace. For both, configurable include/exclude regexp patterns are available.
 
 ### Stack
 
-This project is truly cloud-native, it deploys and runs on Kubernetes only. It stores its settings (aforementioned name patterns) in a configmap.
+This project is truly cloud-native, it deploys and runs on Kubernetes only. It stores its settings (aforementioned name patterns so far) in a Kubernetes configmap.
 
-Observed Kubernetes deployments are measured and exported using Prometheus Node Exporter. Those measurements are scraped (regularly pulled) by Prometheus, the de facto industry standard for monitoring on Kubernetes at the time of writing. Prometheus is not only a monitoring system but also a time series database to collect scraped data.
+Observed Kubernetes deployments are measured and exported using [Prometheus Node Exporter](https://github.com/prometheus/node_exporter). Those measurements are scraped (regularly pulled) by [Prometheus](https://prometheus.io/), the de facto industry standard for monitoring on Kubernetes at the time of writing. Prometheus is not only a monitoring system but also a time series database to collect scraped data.
 
-Another industry standard used here is Grafana which is used to illustrate the results, such as deployment rates.
+Another industry standard used here is [Grafana](https://grafana.com/) which facilitates great results illustration, such as deployment rates.
 
 ## Realization
 
 ### Metric idea
 
-Our goal is to capture deployment per app and namespace. When it comes to Prometheus Node Exporter and measurements, the specific metric format must be determined. There are at least two choices here:
+My goal is to capture deployment per app and namespace. When it comes to Prometheus Node Exporter and measurements, the specific metric format must be determined. There are at least two options here:
 
 1. `deployed{app=<name>,namespace=<name>}=<UnixTimeOfDeployment>`:
 
 Discussion:
 
-- It's the same as the built-in `kube_deployment_created`.
+- It's basically the same as the built-in `kube_deployment_created`
 - It doesn't capture all counts, only the latest timestamp, i.e. there are missed hits in between scrapes
 - It's less intuitive than an increasing count
 
-2. `deployed{app=<name>,namespace=<name>}=<numOfDeployments>`:
+2. `deployed_count{app=<name>,namespace=<name>}=<numOfDeployments>`:
 
 Discussion:
 
 - It's an atomic count which requires history
-- It's conceptually easier to grasp than the `UnixTimeOfDeployment` approach
+- It's conceptually easier to grasp than the `UnixTimeOfDeployment` value approach
 
-Therefore, the latter is the chosen metric format, but in this project here with an in-memory limitation, i.e. no permanent storage for now. In the long-run, this is negligible as we're primarily interested in recent agility, keeping values above certain thresholds.
+Therefore, *option 2, `deployed_count`, is the chosen metric format*, but in this project here with an in-memory limitation, i.e. no permanent storage for now. In the long-run, this is neglectable as we're primarily interested in recent agility, keeping values above certain thresholds.
 
-In terms of PromQL, the Prometheus Query Language, that's e.g.:
+In terms of [PromQL](https://prometheus.io/docs/prometheus/latest/querying/basics/), the Prometheus Query Language, that's e.g.:
 
 - Get the increase in number of deployments (for an app), e.g. for the last 24h: `increase(deployed_count[24h])`
 - Compute the frequency, e.g. for the last week: `increase(deployed_count[7d])/7`
 
-### Design idea
+(The interested reader can find more PromQL Query examples [here](https://prometheus.io/docs/prometheus/latest/querying/examples/).)
 
-3 layers: K8s controller watching K8s deployments -> storing data in map <- node exporter for Prometheus exporting data/frequency
+### Design
 
-[Scheduling](https://prometheus.io/docs/instrumenting/writing_exporters/#scheduling): "*Metrics should only be pulled from the application when Prometheus scrapes them, exporters should not perform scrapes based on their own timers. That is, all scrapes should be synchronous.*"
+At its core, "agility" has 3 layers:
+
+1. A Kubernetes Deployments Watcher that is being notified about app installations on the cluster.
+2. A "Storage Map" that obtains observed app installations per namespace. Stored values are counted.
+3. A Prometheus Node Exporter that exposes storage map data.
+
+The following high-level diagram visualizes the architecture more in detail:
+![Design](docs/design.png "Design")
+
+agility's *deploymentwatcher* and *nodeexporter* run in the same pod. The *deploymentswatcher* settings for app and namespace name patterns are coming from a configmap (being read upon pod start only, i.e. after any change to the settings, the pod must be restarted).
+
+Exported deployment counts end up in Prometheus' data store. While deployment counts and rates can be queried in Prometheus directly, they are also available via dedicated Grafana dashboards. More information about "agility"'s  Prometheus integration and Grafana dashboard setup can be found below.
+
+Last, and most importantly, the end user's access to the KPI measurements illustrated with "agility"'s Grafana dashboards is simply via browser client. No fanciness here.
 
 ### Prerequisites
 
-Local:
+Locally, to build and deploy, the following is required:
 
 - Make
 - Go 1.14+
 - kubectl v1.20.2
 - Helm v3.4.2
 
-K8s:
+As far as Kubernetes is concerned:
 
 - [Kubernetes 1.19.1 installed](docs/K8S.md) with [Prometheus and Grafana deployed](docs/MONITORING.md)
 
@@ -135,6 +148,10 @@ ConfigMap:
 - [A Noob's Guide to Custom Prometheus Exporters](https://rsmitty.github.io/Prometheus-Exporters/)
 - [A Noob's Guide to Custom Prometheus Exporters (Revamped!)](https://rsmitty.github.io/Prometheus-Exporters-Revamp/)
 - [Prometheus' node_exporter.go](https://github.com/prometheus/node_exporter/blob/master/node_exporter.go)
+- [Scheduling](https://prometheus.io/docs/instrumenting/writing_exporters/#scheduling): "*Metrics should only be pulled from the application when Prometheus scrapes them, exporters should not perform scrapes based on their own timers. That is, all scrapes should be synchronous.*"
+
+#### Kind
+
 - kind: [Loading an Image Into Your Cluster](https://kind.sigs.k8s.io/docs/user/quick-start/#loading-an-image-into-your-cluster)
 
 ### K8s API Documentation
@@ -156,10 +173,6 @@ ConfigMap:
   - [Kubewatch controller.go](https://github.com/bitnami-labs/kubewatch/blob/master/pkg/controller/controller.go)
 - [Using Kubernetes API from Go](https://rancher.com/using-kubernetes-api-go-kubecon-2017-session-recap)
 - [How to write Kubernetes custom controllers in Go](https://medium.com/speechmatics/how-to-write-kubernetes-custom-controllers-in-go-8014c4a04235)
-
-### Reading List
-
-- PromQL [Query examples](https://prometheus.io/docs/prometheus/latest/querying/examples/)
 
 ## Deployment
 
