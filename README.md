@@ -49,7 +49,7 @@ Another industry standard used here is [Grafana](https://grafana.com/) which fac
 
 My goal is to capture deployment per app and namespace. When it comes to Prometheus Node Exporter and measurements, the specific metric format must be determined. There are at least two options here:
 
-1. `deployed{app=<name>,namespace=<name>}=<UnixTimeOfDeployment>`:
+A. `deployed{app=<name>,namespace=<name>}=<UnixTimeOfDeployment>`:
 
 Discussion:
 
@@ -57,14 +57,14 @@ Discussion:
 - It doesn't capture all counts, only the latest timestamp, i.e. there are missed hits in between scrapes
 - It's less intuitive than an increasing count
 
-2. `deployed_count{app=<name>,namespace=<name>}=<numOfDeployments>`:
+B. `deployed_count{app=<name>,namespace=<name>}=<numOfDeployments>`:
 
 Discussion:
 
 - It's an atomic count which requires history
 - It's conceptually easier to grasp than the `UnixTimeOfDeployment` value approach
 
-Therefore, *option 2, `deployed_count`, is the chosen metric format*, but in this project here with an in-memory limitation, i.e. no permanent storage for now. In the long-run, this is neglectable as we're primarily interested in recent agility, keeping values above certain thresholds.
+Therefore, *option B, `deployed_count`, is the chosen metric format*, but in this project here with an in-memory limitation, i.e. no permanent storage for now. In the long-run, this is neglectable as we're primarily interested in recent agility, keeping values above certain thresholds.
 
 In terms of [PromQL](https://prometheus.io/docs/prometheus/latest/querying/basics/), the Prometheus Query Language, that's e.g.:
 
@@ -116,16 +116,15 @@ First, to build the individual services:
 
 ### "df-backend"
 
-See also [Add client-go as a dependency](https://github.com/jtestard/client-go/blob/master/INSTALL.md#add-client-go-as-a-dependency):
-
 ```bash
-cd df-backend # pwd is ~/go/src/lttl.dev/agility/df-backend
+cd df-backend # my pwd is ~/go/src/lttl.dev/agility/df-backend
 # to invoke all steps individually
 $ make init
 go mod init
-go: creating new go.mod: module lttl.dev/agility/deployments-watcher
+go: creating new go.mod: module lttl.dev/agility/df-backend
 $ make get
 go get k8s.io/client-go@v0.19.1
+# see also https://github.com/jtestard/client-go/blob/master/INSTALL.md#add-client-go-as-a-dependency
 $ make build
 GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o df-backend
 # for full Makefile usage info, run: make
