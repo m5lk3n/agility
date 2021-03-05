@@ -19,6 +19,10 @@ As per the [State of DevOps 2019](https://services.google.com/fh/files/misc/stat
 
 By providing an actual implementation to determine and to visualize deployment rates, this project called "agility" contributes to measure and to control a DevOps transformation in an organization.
 
+For more details, see [background](docs/BACKGROUND.md).
+
+All project documentation is [here](docs/).
+
 ## Specification
 
 ### KPI
@@ -74,17 +78,17 @@ In terms of [PromQL](https://prometheus.io/docs/prometheus/latest/querying/basic
 At its core, "agility" has 3 layers:
 
 1. A Kubernetes Deployments Watcher that is being notified about app installations on the cluster.
-2. A "Storage Map" that obtains observed app installations per namespace. Stored values are counted.
-3. A Prometheus Node Exporter that exposes storage map data.
+2. A "Storage Map" that counts observed app deployments per namespace.
+3. A Prometheus Node Exporter that exposes map data.
 
-The following high-level diagram visualizes the architecture more in detail:
+The following high-level diagram visualizes the architecture more in detail, with the 3 core layers in **bold**:
 ![Design](docs/design.png "Design")
 
-agility's *deploymentwatcher* and *nodeexporter* run in the same pod. The *deploymentswatcher* settings for app and namespace name patterns are coming from a configmap (being read upon pod start only, i.e. after any change to the settings, the pod must be restarted).
+"agility"'s *deploymentwatcher* and *nodeexporter* run in the same pod. The *deploymentswatcher* settings for app and namespace name patterns are coming from a configmap (being read upon pod start only, i.e. after any change to the settings, the pod must be restarted).
 
 Exported deployment counts end up in Prometheus' data store. While deployment counts and rates can be queried in Prometheus directly, they are also available via dedicated Grafana dashboards. More information about "agility"'s  Prometheus integration and Grafana dashboard setup can be found below.
 
-Last, and most importantly, the end user's access to the KPI measurements illustrated with "agility"'s Grafana dashboards is simply via browser client. No fanciness here.
+Last, and most importantly, the end user's access to the KPI measurements illustrated with "agility"'s Grafana dashboards is simply via browser client which is depicted in above's diagram in orange. No fanciness here.
 
 ### Prerequisites
 
@@ -99,98 +103,74 @@ As far as Kubernetes is concerned:
 
 - [Kubernetes 1.19.1 installed](docs/K8S.md) with [Prometheus and Grafana deployed](docs/MONITORING.md)
 
-## Import Prometheus Dashboard in Grafana
-
-Under Grafana -> Dashboards -> Manage -> [Import](http://localhost:3000/dashboard/import) (assumes Grafana to be available under [http://localhost:3000](helper/expose-grafana.sh)):
-
-- Upload [these dashboards](grafana-dashboards/)
-- Optional: load dashboard ID `1860`
-
 ## Build
 
-### deployments watcher
+There are two services in this project:
 
-- [Add client-go as a dependency](https://github.com/jtestard/client-go/blob/master/INSTALL.md#add-client-go-as-a-dependency):
+1. a "df-backend" where *deploymentswatcher* and *nodeexporter* reside. It's basically a go binary :-)
+2. a "df-frontend" which is a simple API server to provide a liveness and a readiness endpoint for the backend. It's basically a go binary :-)
+
+Both binaries are wrapped up with a Dockerfile. The resulting image can easily be deployed on Kubernetes using the Helm chart.
+
+First, to build the individual services:
+
+### "df-backend"
+
+See also [Add client-go as a dependency](https://github.com/jtestard/client-go/blob/master/INSTALL.md#add-client-go-as-a-dependency):
 
 ```bash
-# pwd is ~/go/src/lttl.dev/agility/deployments-watcher
+cd df-backend # pwd is ~/go/src/lttl.dev/agility/df-backend
+# to invoke all steps individually
 $ make init
 go mod init
 go: creating new go.mod: module lttl.dev/agility/deployments-watcher
 $ make get
 go get k8s.io/client-go@v0.19.1
+$ make build
+GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o df-backend
+# for full Makefile usage info, run: make
 # ...
+# or short: make all
 ```
 
-## Bookmarks
+The outcome of `make` above is the `df-backend` binary.
 
-### Major Resources
+### "df-frontend"
 
-#### K8s
+```bash
+cd df-frontend # pwd is ~/go/src/lttl.dev/agility/df-frontend
+# to invoke all steps individually
+$ make init
+# ...
+$ make get
+# ...
+$ make build
+# ...
+# for full Makefile usage info, run: make
+# ...
+# or short: make all
+```
 
-Watcher:
-
-- [Building stuff with the Kubernetes API (Part 4) - Using Go](https://medium.com/programming-kubernetes/building-stuff-with-the-kubernetes-api-part-4-using-go-b1d0e3c1c899) and related [pvcwatch in go](https://github.com/vladimirvivien/k8s-client-examples/blob/master/go/pvcwatch/main.go)
-- client-go
-  - [client-go](https://github.com/kubernetes/client-go)
-  - [CUD k8s-deployment in main.go](https://github.com/kubernetes/client-go/blob/master/examples/create-update-delete-deployment/main.go)
-
-ConfigMap:
-
-- [K8S Read config map via go API](https://stackoverflow.com/questions/59234194/k8s-read-config-map-via-go-api)
-- [A simple Go client for Kubernetes](https://github.com/ericchiang/k8s#a-simple-go-client-for-kubernetes)
-
-#### Prometheus Node Exporter
-
-- [Writing exporters](https://prometheus.io/docs/instrumenting/writing_exporters/)
-- [Naming conventions](https://prometheus.io/docs/practices/naming/)
-- [Best practices](https://prometheus.io/docs/practices/instrumentation/#things-to-watch-out-for)
-- [A Noob's Guide to Custom Prometheus Exporters](https://rsmitty.github.io/Prometheus-Exporters/)
-- [A Noob's Guide to Custom Prometheus Exporters (Revamped!)](https://rsmitty.github.io/Prometheus-Exporters-Revamp/)
-- [Prometheus' node_exporter.go](https://github.com/prometheus/node_exporter/blob/master/node_exporter.go)
-- [Scheduling](https://prometheus.io/docs/instrumenting/writing_exporters/#scheduling): "*Metrics should only be pulled from the application when Prometheus scrapes them, exporters should not perform scrapes based on their own timers. That is, all scrapes should be synchronous.*"
-
-#### Kind
-
-- kind: [Loading an Image Into Your Cluster](https://kind.sigs.k8s.io/docs/user/quick-start/#loading-an-image-into-your-cluster)
-
-### K8s API Documentation
-
-- [k8s client-go apps-v1](https://godoc.org/k8s.io/client-go/kubernetes/typed/apps/v1)
-- [k8s api-v1](https://godoc.org/k8s.io/api/core/v1)
-
-#### Backlog
-
-- client-go
-  - [client-go examples](https://github.com/kubernetes/client-go/tree/master/examples)
-  - [Available clientsets](https://github.com/kubernetes/client-go/blob/master/kubernetes/clientset.go)
-  - [Deployment informer](https://github.com/kubernetes/client-go/blob/master/informers/apps/v1/deployment.go)
-- [Controllers architecture](https://kubernetes.io/docs/concepts/architecture/controller/)
-- [Sample controller](https://github.com/kubernetes/sample-controller)
-- [A deep dive into Kubernetes controllers](https://engineering.bitnami.com/articles/a-deep-dive-into-kubernetes-controllers.html)
-- Kubewatch
-  - [Kubewatch, an example of Kubernetes custom controller](https://engineering.bitnami.com/articles/kubewatch-an-example-of-kubernetes-custom-controller.html)
-  - [Kubewatch controller.go](https://github.com/bitnami-labs/kubewatch/blob/master/pkg/controller/controller.go)
-- [Using Kubernetes API from Go](https://rancher.com/using-kubernetes-api-go-kubecon-2017-session-recap)
-- [How to write Kubernetes custom controllers in Go](https://medium.com/speechmatics/how-to-write-kubernetes-custom-controllers-in-go-8014c4a04235)
+The outcome of `make` above is the `df-frontend` binary.
 
 ## Deployment
 
+Bake the previously built binaries into a container image, and install the image on Kubernetes as follows:
+
 ```bash
 # from this project directory
+$ make bake
+...
+Successfully tagged lttl.dev/agility-df:0.1.0
+# optional, only relevant if using kind, load the image into kind: make load
 $ make install
 ```
 
+This will deploy "agility" on Kubernetes.
+
 ## Access
 
-```bash
-# forward local port 8088 to df-frontend port (80), to enable: curl localhost:8088
-$ helper/expose-df-frontend.sh
-# forward local port 8089 to df-backend (node-exporter) port (8080), to enable: curl localhost:8089/metrics
-$ helper/expose-df-backend.sh
-```
-
-## Configure DF Node Exporter in Prometheus
+### 1. Configure DF Node Exporter in Prometheus
 
 Add the following snippet to `prometheus-server`'s Configmap under *scrape_configs*:
 
@@ -216,28 +196,28 @@ scrape_configs:
 
 Remove the `prometheus-server` pod to force a restart.
 
-## Testing
+### 2. Import Prometheus Dashboards in Grafana
 
-Run a K8s cluster locally.
+With aforementioned Kubernetes installation at hand, browse to Grafana (here assumed to be available under [http://localhost:3000](helper/expose-grafana.sh)). Follow Dashboards -> Manage -> [Import](http://localhost:3000/dashboard/import) to upload [these dashboards](grafana-dashboards/).
+
+For thresholds used in gauges, see [background](docs/BACKGROUND.md).
+
+### Optional: Direct Access to "df-backend"
 
 ```bash
-# shell 1
-$ make all
-# ...
-$ go run main.go
+# forward local port 8088 to df-frontend port (80), to enable e.g.: curl http://localhost:8088/ready
+$ helper/expose-df-frontend.sh
+# forward local port 8089 to df-backend (node-exporter) port (8080), to enable: curl localhost:8089/metrics
+$ helper/expose-df-backend.sh
 ```
 
+## Sanity Check
+
 ```bash
-# shell 2
 # run some dummy deployments ...
 $ helper/deploy-dummy-apps.sh
 ```
 
-## Troubleshooting
+Observe and explore the Grafana dashboards like the following:
 
-### Helm
-
-```bash
-# from this project folder
-$ helm install --namespace agility --debug --dry-run agility ./chart
-```
+![Example Short-term Throughput Gauges](docs/grafana_df_short_term.png "Example Short-term Throughput Gauges")
