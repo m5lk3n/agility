@@ -1,6 +1,6 @@
 # agility
 
-This is a cloud-native implementation of how to measure agility (read: digital/DevOps transformation) using Kubernetes *Deployment Frequency* KPI.
+This is a cloud-native implementation of how to measure agility (read: digital transformation/DevOps transformation) using Kubernetes *Deployment Frequency*.
 
 ## Motivation
 
@@ -15,7 +15,7 @@ This project addresses the first KPI.
 
 The Deployment Frequency is the amount of deployments (to production) per time period.
 
-As per the [State of DevOps 2019](https://services.google.com/fh/files/misc/state-of-devops-2019.pdf) report, high performing teams deploy 4 times a day. For 2020, in [Data-Driven Benchmarks for High Performing Engineering Teams](https://www.youtube.com/watch?v=iUFpRFvlT2U), CircleCI observed a mean value of 8 deployments per day.
+As per the [State of DevOps 2019](https://services.google.com/fh/files/misc/state-of-devops-2019.pdf) report, high performing teams deploy 4 times a day. For 2020, in [Data-Driven Benchmarks for High Performing Engineering Teams](https://www.youtube.com/watch?v=iUFpRFvlT2U), CircleCI observed a mean value of 8 deployments per day. This value is used as the main indicator in dashboard gauges below.
 
 By providing an actual implementation to determine and to visualize deployment rates, this project called "agility" contributes to measure and to control a DevOps transformation in an organization.
 
@@ -23,15 +23,31 @@ For more details, see [background](docs/BACKGROUND.md).
 
 All project documentation is [here](docs/).
 
+## Short Version
+
+Although it is highly advised to follow this README in full, here's the short version to get "agility" up and running:
+
+```bash
+$ make build # step 1
+$ make install # step 2
+# this will deploy the built system on Kubernetes
+```
+
+Step 3: [Configure](#configure)
+
+Step 4: [Access](#access)
+
+Step 5: [Explore](#explore)
+
 ## Specification
 
 ### KPI
 
-This project's approach is purely based upon Kubernetes deployments as containerized applications in general and the Kubernetes container orchestrator in particular represent the state of the art, and must therefore be the heart of a digital transformation nowadays.
+This project's approach is purely based upon Kubernetes deployments as containerized applications in general and the Kubernetes container orchestrator in particular represent the state of the art. Therefore, IMHO, Kubernetes should be at the heart of an implementation of a digital transformation nowadays.
 
-By watching deployments directly on Kubernetes using its API, any deployment, be it directly via `kubectl deploy`, or indirectly via Helm or CD tooling like ArgoCD, is captured.
+By watching deployments directly on Kubernetes using its API, any deployment, be it directly via `kubectl deploy`, or indirectly via Helm or CD tooling like ArgoCD, is captured. This makes "agility" agnostic to the deployment tooling or mechanism.
 
-Since this project's *deploymentwatcher* is deployed as a light-weight container on a cluster, it can also be used in different, separate environments, not only production.
+Since this system is deployed as a light-weight container on a cluster, it can also be used in different, separate environments, not only production to give more valuable insights.
 
 Additionally, the *deploymentwatcher* supports deployments per application and per namespace. For both, configurable include/exclude regexp patterns are available.
 
@@ -47,7 +63,7 @@ Another industry standard used here is [Grafana](https://grafana.com/) which fac
 
 ### Metric idea
 
-My goal is to capture deployment per app and namespace. When it comes to Prometheus Node Exporter and measurements, the specific metric format must be determined. There are at least two options here:
+"agility"'s goal is to capture deployment per app and namespace. When it comes to Prometheus Node Exporter and measurements, the specific metric format must be determined. There are at least two options here:
 
 A. `deployed{app=<name>,namespace=<name>}=<UnixTimeOfDeployment>`:
 
@@ -64,14 +80,14 @@ Discussion:
 - It's an atomic count which requires history
 - It's conceptually easier to grasp than the `UnixTimeOfDeployment` value approach
 
-Therefore, *option B, `deployed_count`, is the chosen metric format*, but in this project here with an in-memory limitation, i.e. no permanent storage for now. In the long-run, this is neglectable as we're primarily interested in recent agility, keeping values above certain thresholds.
+Therefore, *option B, `deployed_count`, is the chosen metric format*, but in this project here with an in-memory limitation, i.e. no permanent storage in Prometheus' time series for now. In the long-run, this is neglectable as we're primarily interested in recent agility, keeping values above certain thresholds.
 
-In terms of [PromQL](https://prometheus.io/docs/prometheus/latest/querying/basics/), the Prometheus Query Language, that's e.g.:
+Expressed in [PromQL](https://prometheus.io/docs/prometheus/latest/querying/basics/), the Prometheus Query Language, that means for example:
 
 - Get the increase in number of deployments (for an app), e.g. for the last 24h: `increase(deployed_count[24h])`
 - Compute the frequency, e.g. for the last week: `increase(deployed_count[7d])/7`
 
-(The interested reader can find more PromQL Query examples [here](https://prometheus.io/docs/prometheus/latest/querying/examples/).)
+(The interested reader can find more PromQL examples [here](https://prometheus.io/docs/prometheus/latest/querying/examples/).)
 
 ### Design
 
@@ -110,9 +126,9 @@ There are two services in this project:
 1. a "df-backend" where *deploymentswatcher* and *nodeexporter* reside. It's basically a go binary :-)
 2. a "df-frontend" which is a simple API server to provide a liveness and a readiness endpoint for the backend. It's basically a go binary :-)
 
-Both binaries are wrapped up with a Dockerfile. The resulting image can easily be deployed on Kubernetes using the Helm chart.
+Both binaries are wrapped up with a Dockerfile. The resulting image can easily be deployed on Kubernetes using the [Helm chart](chart/).
 
-First, to build the individual services:
+To build the individual services:
 
 ### "df-backend"
 
@@ -152,31 +168,38 @@ $ make build
 
 The outcome of `make` above is the `df-frontend` binary.
 
-## Deployment
+### Shortcut
 
-Bake the previously built binaries into a container image, and install the image on Kubernetes as follows:
+Instead of building both binaries individually, but to compile both services at once and to bake them into a container image, use (and this should be the standard way):
 
 ```bash
 # from this project directory
-$ make bake
+$ make build
 ...
 Successfully tagged lttl.dev/agility-df:0.1.0
-# optional, only relevant if using kind, load the image into kind: make load
+```
+
+## Install
+
+Finally, to install the previously built image on Kubernetes as follows:
+
+```bash
+# uncomment the following if you're using kind to load the image
+# $ make load
+# from this project directory
 $ make install
 ```
 
 This will deploy "agility" on Kubernetes.
 
-## Access
+## Configure
 
-### 1. Configure DF Node Exporter in Prometheus
-
-Add the following snippet to `prometheus-server`'s Configmap under *scrape_configs*:
+To configure the *nodeexporter* in Prometheus, add the following snippet to `prometheus-server`'s Configmap under *scrape_configs*:
 
 ```yaml
 scrape_configs:
 - job_name: 'df_node_exporter_metrics'
-  scrape_interval: 5s # for testing only
+  # scrape_interval: 5s # for testing only 
   metrics_path: /metrics
   static_configs:
     - targets:
@@ -195,13 +218,15 @@ scrape_configs:
 
 Remove the `prometheus-server` pod to force a restart.
 
-### 2. Import Prometheus Dashboards in Grafana
+## Access
+
+### Import Prometheus Dashboards in Grafana
 
 With aforementioned Kubernetes installation at hand, browse to Grafana (here assumed to be available under [http://localhost:3000](helper/expose-grafana.sh)). Follow Dashboards -> Manage -> [Import](http://localhost:3000/dashboard/import) to upload [these dashboards](grafana-dashboards/).
 
 For thresholds used in gauges, see [background](docs/BACKGROUND.md).
 
-### Optional: Direct Access to "df-backend"
+### Optional: Access "df-backend" directly
 
 ```bash
 # forward local port 8088 to df-frontend port (80), to enable e.g.: curl http://localhost:8088/ready
@@ -210,12 +235,16 @@ $ helper/expose-df-frontend.sh
 $ helper/expose-df-backend.sh
 ```
 
-## Sanity Check
+## Explore
+
+### Optional: Sanity Check
 
 ```bash
 # run some dummy deployments ...
 $ helper/deploy-dummy-apps.sh
 ```
+
+### Read Measurements
 
 Observe and explore the Grafana dashboards like the following:
 
