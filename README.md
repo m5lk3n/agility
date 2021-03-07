@@ -1,6 +1,6 @@
 # agility
 
-This is a cloud-native implementation of how to measure agility (read: digital transformation/DevOps transformation) using Kubernetes *Deployment Frequency*.
+This is a cloud-native implementation of how to measure agility (read: digital transformation/DevOps adoption) using Kubernetes *Deployment Frequency*.
 
 ## Motivation
 
@@ -8,7 +8,7 @@ In their book "[Accelerate - The Science Behind DevOps: Building and Scaling Hig
 
 1. Deployment Frequency (DF) (or Throughput)
 2. Change Failure Rate
-3. Mean Time to Recover
+3. Mean Time to Recovery (MTTR)
 4. Lead Time (or Cycle Time)
 
 This project addresses the first KPI.
