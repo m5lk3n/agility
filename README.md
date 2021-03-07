@@ -112,12 +112,14 @@ Locally, to build and deploy, the following is required:
 
 - Make
 - Go 1.14+
-- kubectl v1.20.2
+- Docker 19.03.6+
+- kubectl v1.20.2+
 - Helm v3.4.2
 
 As far as Kubernetes is concerned:
 
 - [Kubernetes 1.19.1 installed](docs/K8S.md) with [Prometheus and Grafana deployed](docs/MONITORING.md)
+- Kubernetes privileges to manage RBAC settings (to be precise: authorization to grant the permission to watch deployments is needed, see [ClusterRole](chart/templates/rbac.yaml))
 
 ## Build
 
