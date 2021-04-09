@@ -71,4 +71,3 @@ ConfigMap:
 - https://rsmitty.github.io/Prometheus-Exporters-Revamp/
 - https://github.com/prometheus/node_exporter/blob/master/node_exporter.go
 - https://stackoverflow.com/questions/47138461/get-total-requests-in-a-period-of-time
-- https://thenewstack.io/how-devops-affects-business-stakeholders-and-leaders/

@@ -2,7 +2,7 @@
 
 ## Deployment Frequency KPI
 
-## References
+### References
 
 - [Accelerate - The Science Behind DevOps: Building and Scaling High Performing Technology Organizations
 By Nicole Forsgren, Jez Humble, Gene Kim · 2018](https://itrevolution.com/book/accelerate/)
@@ -24,3 +24,11 @@ By Nicole Forsgren, Jez Humble, Gene Kim · 2018](https://itrevolution.com/book/
     | **Mean** | **8.22** | **5.76** |
 
 => This is where the [Grafana Dashboard Gauges'](../grafana-dashboards/) thresholds are coming from.
+
+## Unnamed
+
+- https://thenewstack.io/how-devops-affects-business-stakeholders-and-leaders/
+- https://www.thundra.io/apm
+- https://amazicworld.com/dealing-with-devops-metrics-and-kpis/
+- https://www.cloudbees.com/blog/engineering-teams-health
+- https://www.cloudbees.com/products/engineering-efficiency
