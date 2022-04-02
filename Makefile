@@ -1,4 +1,4 @@
-DEFAULT_IMAGE_VER = "0.1.0"
+DEFAULT_IMAGE_VER = "0.1.1"
 IMAGE_VER ?= ${DEFAULT_IMAGE_VER} # can be overridden by ENV param 
 IMAGE = lttl.dev/agility-df:${IMAGE_VER}
 VERSION_TXT = version.txt

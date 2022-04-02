@@ -138,7 +138,7 @@ To build the individual services:
 cd df-backend # my pwd is ~/go/src/lttl.dev/agility/df-backend
 # to invoke all steps individually
 $ make init
-go mod init
+go mod init lttl.dev/agility/df-backend
 go: creating new go.mod: module lttl.dev/agility/df-backend
 $ make get
 go get k8s.io/client-go@v0.19.1
@@ -178,7 +178,7 @@ Instead of building both binaries individually, but to compile both services at 
 # from this project directory
 $ make build
 ...
-Successfully tagged lttl.dev/agility-df:0.1.0
+Successfully tagged lttl.dev/agility-df:0.1.1
 ```
 
 ## Install
